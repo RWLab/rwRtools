@@ -54,6 +54,7 @@ load_pod_data <- function(pod, path = ".") {
   }
 }
 
+# todo: expose and document
 load_data_object <- function(path, object, bucket = NA) {
   "load a single specified data object"
 # TODO: check object exists, get file size
@@ -70,6 +71,7 @@ load_data_object <- function(path, object, bucket = NA) {
     stop("Error: file failed to transfer")
 }
 
+# todo: expose and documetn this functin
 setup_for_pod <- function(pod, path = ".", oauth_email = NA) {
   "do everything needed to get going with research pod - auth and load data"
   rwlab_gc_auth(oauth_email = oauth_email)

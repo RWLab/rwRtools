@@ -10,6 +10,8 @@
 The goal of rwRtools is to make it easy to access The Lab’s datasets and
 get started with research.
 
+TODO: big up the lab, links to RW etc
+
 ## Installation
 
 You can install rwRtools from GitHub like so:
