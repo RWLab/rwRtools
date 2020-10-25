@@ -15,4 +15,6 @@ Imports:
     gargle,
     googleAuthR,
     glue,
-    googleCloudStorageR
+    googleCloudStorageR,
+    R.utils,
+    httr
