@@ -16,5 +16,6 @@ Imports:
     googleAuthR,
     glue,
     googleCloudStorageR,
-    R.utils,
+    R.utils
+Depends:
     httr
