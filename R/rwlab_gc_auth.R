@@ -20,7 +20,7 @@
 #' \dontrun{rwlab_gc_auth()}
 rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
 
-  if(!interactive)
+  if(!interactive())
     stop("This function is designed for interactive use only")
 
   options(
