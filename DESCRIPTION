@@ -1,16 +1,16 @@
-Package: rwtools
-Title: What the Package Does (One Line, Title Case)
+Package: rwRtools
+Title: R Tools For Working In The Lab
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+    person(first = "Kris", last = "Longmore", role = c("aut", "cre"), email = "kris@robotwealth.com")
+Description: The Lab is Robot Wealth's hub for community-driven research and collaboration. rwtools makes it easy to access The Lab's datasets and get started with quantitative research.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat
+Imports: 
+    gargle,
+    googleAuthR
