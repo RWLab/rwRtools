@@ -13,4 +13,6 @@ Suggests:
     testthat
 Imports: 
     gargle,
-    googleAuthR
+    googleAuthR,
+    glue,
+    googleCloudStorageR

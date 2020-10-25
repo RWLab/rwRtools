@@ -1,21 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rwtools
+# rwRtools
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-The goal of rwtools is to make it easy to access The Lab’s datasets and
+The goal of rwRtools is to make it easy to access The Lab’s datasets and
 get started with research.
 
 ## Installation
 
-You can install rwtools from GitHub like so:
+You can install rwRtools from GitHub like so:
 
 ``` r
-devtools::install_github("RWLab/rwtools")
+devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 ```
 
 ## Demo
@@ -24,7 +24,7 @@ Authorise a Google Identity to access The Lab’s cloud infrastructure by
 doing:
 
 ``` r
-library(rwtools)
+library(rwRtools)
 rwlab_gc_auth("your_email@somewhere.com")
 ```
 

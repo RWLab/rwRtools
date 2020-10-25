@@ -12,13 +12,17 @@
 #'
 #'  TODO: How to set up a Google Identity if you don't have one and/or don't want to use a gmail account.
 #'
-#' @param oauth_email string, The email address you use to access The Lab
+#' @param oauth_email string, The email address you use to access The Lab. If NA (default), select interactively.
 #' @param oauth_cache bool, Cache the OAuth token for reuse until expiry
 #' @return an OAuth token object (invisibly)
 #' @export
 #' @examples
-#' rwlab_gc_auth()
-rwlab_gc_auth <- function(oauth_email, oauth_cache = TRUE) {
+#' \dontrun{rwlab_gc_auth()}
+rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
+
+  if(!interactive)
+    stop("This function is designed for interactive use only")
+
   options(
     rlang_interactive = TRUE,
     gargle_oauth_email = oauth_email,
@@ -30,8 +34,3 @@ rwlab_gc_auth <- function(oauth_email, oauth_cache = TRUE) {
 
 }
 
-rwlab_list_bucket_objects <- function(bucket = "rw_equity_research_sprint") {
-  # TODO: if(.gcs_env$bucket != bucket) gcs_global_bucket(bucket)
-  gcs_global_bucket(bucket)
-  gcs_list_objects('rw_equity_research_sprint')
-}
