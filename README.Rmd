@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of rwRtools is to make it easy to access The Lab's datasets and get started with research. 
+The goal of `rwRtools` is to make it easy to access The Lab's datasets and get started with research. 
 
 ## What is The Lab?
 
@@ -43,7 +43,7 @@ For example:
 
 ### Install and load
 
-The easiest way to install and load rwRtools and its dependencies is via the `pacman` library:
+The easiest way to install and load `rwRtools` and its dependencies is via the `pacman` library:
 
 ```{r}
 if(!require("pacman")) install.packages("pacman")
@@ -59,7 +59,7 @@ devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 
 ### Quickstart: Set up for working on a Research Pod
 
-After installing and loading rwRtools, this is the quickest way to set up a session for working on a particular Research Pod.
+After installing and loading `rwRtools`, this is the quickest way to set up a session for working on a particular Research Pod.
 
 ```{r, eval=FALSE, echo=TRUE}
 setup_for_pod(pod = "EquityFactors", path = ".")
@@ -95,7 +95,7 @@ If called in an interactive session, you will be prompted in a browser to select
 
 This is useful if you need re-authorise, or if you want to access specific Lab objects in GCS without doing the entire setup process.  
 
-```{r}
+```{r, eval=FALSE, echo=TRUE}
 rwlab_gc_auth()
 ```
 

@@ -7,8 +7,8 @@
 
 <!-- badges: end -->
 
-The goal of rwRtools is to make it easy to access The Lab’s datasets and
-get started with research.
+The goal of `rwRtools` is to make it easy to access The Lab’s datasets
+and get started with research.
 
 ## What is The Lab?
 
@@ -41,8 +41,8 @@ For example:
 
 ### Install and load
 
-The easiest way to install and load rwRtools and its dependencies is via
-the `pacman` library:
+The easiest way to install and load `rwRtools` and its dependencies is
+via the `pacman` library:
 
 ``` r
 if(!require("pacman")) install.packages("pacman")
@@ -58,7 +58,7 @@ devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 
 ### Quickstart: Set up for working on a Research Pod
 
-After installing and loading rwRtools, this is the quickest way to set
+After installing and loading `rwRtools`, this is the quickest way to set
 up a session for working on a particular Research Pod.
 
 ``` r
@@ -113,12 +113,6 @@ specific Lab objects in GCS without doing the entire setup process.
 
 ``` r
 rwlab_gc_auth()
-#> Using an auto-discovered, cached token.
-#> To suppress this message, modify your code or options to clearly consent to the use of a cached token.
-#> See gargle's "Non-interactive auth" vignette for more details:
-#> https://gargle.r-lib.org/articles/non-interactive-auth.html
-#> The gargle package is using a cached token for kris@robotwealth.com.
-#> i 2020-10-26 14:17:55 > Setting client.id from options(googleAuthR.client_id)
 ```
 
 ### Load all GCS objects for a Research Pod
