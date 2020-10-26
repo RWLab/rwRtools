@@ -20,14 +20,12 @@
 #' \dontrun{rwlab_gc_auth()}
 rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
 
-  if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0) {  # or interactive()
-    print("colab session detected")
-    # file.exists("/usr/local/lib/python3.6/dist-packages/google/colab/_ipython.py")) {
+  if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
     options(gargle_oob_default = TRUE)
-  } # else gargle_oob_default = FALSE
-
-  # stopifnot(interactive(), "Error: This function is for use in an interactive session.")
+  } else {
+    gargle_oob_default = FALSE
+  }
 
   options(
     rlang_interactive = TRUE,
