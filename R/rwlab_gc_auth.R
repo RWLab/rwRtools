@@ -23,7 +23,8 @@ rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
   if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0) {
     print("colab session detected")
     # file.exists("/usr/local/lib/python3.6/dist-packages/google/colab/_ipython.py")) {
-    R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
+    # R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
+    options(gargle_oob_default = TRUE)
   }
 
   # stopifnot(interactive(), "Error: This function is for use in an interactive session.")
@@ -35,7 +36,7 @@ rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
   )
 
   tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform")
-  googleAuthR::gar_auth(token = tt)
+  googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default())
 
 }
 
