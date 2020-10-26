@@ -45,7 +45,16 @@ via the `pacman` library:
 ``` r
 if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
-pacman::p_load_gh("RWLab/rwRtools", dependencies = TRUE)
+pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
+#> 
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKkF8yI\remotes7eac4fee278b\RWLab-rwRtools-4097946/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKkF8yI\remotes7eac4fee278b\RWLab-rwRtools-4097946/DESCRIPTION' (338ms)
+#>       -  preparing 'rwRtools':
+#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
+#>       -  checking for LF line-endings in source and make files and shell scripts
+#>       -  checking for empty or unneeded directories
+#>       -  building 'rwRtools_0.0.0.9001.tar.gz'
+#>      
+#> 
 ```
 
 If you prfer, you can also use `devtools` to install, and the load via

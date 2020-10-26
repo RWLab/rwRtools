@@ -45,7 +45,7 @@ The easiest way to install and load `rwRtools` and its dependencies is via the `
 
 ```{r}
 if(!require("pacman")) install.packages("pacman")
-pacman::p_load_gh("RWLab/rwRtools", dependencies = TRUE)
+pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 ```
 
 If you prfer, you can also use `devtools` to install, and the load via `library`:
