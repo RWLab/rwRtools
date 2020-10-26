@@ -37,9 +37,7 @@ For example:
 3.  It makes the fruits of that scaled research effort available to the
     entire Robot Wealth community.
 
-## Demo
-
-### Install and load
+## Install and load
 
 The easiest way to install and load `rwRtools` and its dependencies is
 via the `pacman` library:
@@ -58,10 +56,65 @@ devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 library(rwRtools)
 ```
 
-### Quickstart: Set up for working on a Research Pod
+## Quickstart: Set up for working on a Research Pod
 
 After installing and loading `rwRtools`, the quickest way to set up a
 session for working on a particular Research Pod is:
+
+### 1\. Authorise to the data library
+
+``` r
+rwlab_gc_auth()
+```
+
+If called in an interactive session, you will be prompted in a browser
+to select a Google Identity and copy and paste an authentication code
+back at the call site.
+
+### 2\. List The Lab’s Research Pods
+
+``` r
+list_pods()
+#> [1] "EquityFactors"
+```
+
+### 3\. Load essential Pod data
+
+``` r
+load_pod_data(pod = "EquityFactors", path = ".")
+```
+
+This transfers the essential data that you always need to `path` (ohlc,
+metadata), overwriting any existing local Pod objects.
+
+Requires that you’ve already authorised to the relevant GCS bucket.
+
+### 4\. See all data objects associated with a Pod
+
+``` r
+get_pod_meta(pod = "EquityFactors")
+#> $bucket
+#> [1] "rw_equity_research_sprint"
+#> 
+#> $datasets
+#> [1] "clean_R1000.csv"  "fundamentals.csv"
+#> 
+#> $essentials
+#> [1] "clean_R1000.csv"
+```
+
+This outputs a list of all the data objects you can transfer for a Pod.
+
+### 5\. Load specific additional Pod data objects
+
+``` r
+load_lab_object(path = ".", pod = "EquityFactors", object = "clean_R1000.csv")
+```
+
+This transfers a specifc object to `path`, overwriting any existing
+local instance of that object.
+
+Requires that you’ve already authorised to the relevant GCS bucket.
 
 ``` r
 setup_for_pod(pod = "EquityFactors", path = ".")
@@ -73,75 +126,6 @@ objects associated with the Pod from GCS to `path`.
 If your session is interactive, you will be prompted in a browser to
 select a Google Identity and copy and paste an authentication code back
 at the call site.
-
-### List The Lab’s Research Pods
-
-Each Pod has an associated GCS bucket containing datasets and other
-objects relevant to the Pod. Get a list of currently available Pods by
-doing:
-
-``` r
-list_pods()
-#> [1] "EquityFactors"
-```
-
-This function does not access GCS and therefore does not require an
-authorisation step.
-
-### See a Research Pod’s GCS objects
-
-See all objects associated with a Research Pod:
-
-``` r
-get_pod_meta(pod = "EquityFactors")
-#> $bucket
-#> [1] "rw_equity_research_sprint"
-#> 
-#> $datasets
-#> [1] "clean_R1000.csv"  "fundamentals.csv"
-```
-
-This function does not access GCS and therefore does not require an
-authorisation step.
-
-### Kick off an OAuth process to access The Lab’s cloud infrastructure
-
-``` r
-rwlab_gc_auth()
-```
-
-If called in an interactive session, you will be prompted in a browser
-to select a Google Identity and copy and paste an authentication code
-back at the call site.
-
-This is useful if you need re-authorise or if you want to access
-specific Lab objects in GCS without doing the entire setup process.
-
-### Load all GCS objects for a Research Pod
-
-``` r
-load_pod_data(pod = "EequityFactors", path = ".")
-```
-
-This transfers all objects associated with a Pod from GCS to `path`,
-overwriting any existing local Pod objects.
-
-This is useful if you need a fresh copy of the Pod’s datasets, but don’t
-need to re-authorise to GCS. Requires that you’ve already authorised to
-the relevant GCS bucket.
-
-### Load a specific GCS object
-
-``` r
-load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
-```
-
-This transfers a specifc object from GCS to `path`, overwriting any
-existing local instance of that object.
-
-This is useful if you need a fresh copy of a single dataset, but don’t
-need to re-authorise to GCS. Requires that you’ve already authorised to
-the relevant GCS bucket.
 
 ## Examples
 

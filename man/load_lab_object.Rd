@@ -4,14 +4,14 @@
 \alias{load_lab_object}
 \title{Transfer a single specified object from Google Cloud}
 \usage{
-load_lab_object(path, object, bucket = NA)
+load_lab_object(path, pod, object)
 }
 \arguments{
 \item{path}{string, Local path for saving object}
 
-\item{object}{string, Name of the object to transfer}
+\item{pod}{string, Name of the Research Pod}
 
-\item{bucket}{string, Name of object's bucket, NA uses gcs_global_bucket, default NA}
+\item{object}{string, Name of the object to transfer}
 }
 \value{
 bool specifying success (TRUE) or failure (FALSE) of object transfer
@@ -21,6 +21,6 @@ This is useful for reloading a specific object rather than transferring all Rese
 }
 \examples{
 \dontrun{
-load_data_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
+load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
 }
 }

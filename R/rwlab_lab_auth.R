@@ -21,8 +21,8 @@
 #' @import httr
 #' @export
 #' @examples
-#' \dontrun{rwlab_gc_auth()}
-rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
+#' \dontrun{rwlab_data_auth()}
+rwlab_data_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
 
   if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
