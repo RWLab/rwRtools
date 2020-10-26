@@ -104,7 +104,7 @@ load_lab_object <- function(path, object, bucket = NA) {
     bucket = googleCloudStorageR::gcs_get_global_bucket()
 
   # attempt object transfer
-  if(googleCloudStorageR::gcs_get_object(object = object, bucket = bucket, saveToDisk = glue::glue("{path}/object"), overwrite = TRUE)) {
+  if(googleCloudStorageR::gcs_get_object(object = object, bucket = bucket, saveToDisk = glue::glue("{path}/{object}"), overwrite = TRUE)) {
     cat("File successfully transferred\n")
     TRUE
   } else {
