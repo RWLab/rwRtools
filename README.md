@@ -35,7 +35,7 @@ For example:
     contributing, you’ll learn a ton in the process.
 2.  It scales the research effort by enabling community contribution.
 3.  It makes the fruits of that scaled research effort available to the
-    entire community.
+    entire Robot Wealth community.
 
 ## Demo
 
@@ -50,16 +50,18 @@ if(!require("pacman")) install.packages("pacman")
 pacman::p_load_gh("RWLab/rwRtools", dependencies = TRUE)
 ```
 
-If you prfer, you can also use `devtools` to install:
+If you prfer, you can also use `devtools` to install, and the load via
+`library`:
 
 ``` r
 devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
+library(rwRtools)
 ```
 
 ### Quickstart: Set up for working on a Research Pod
 
-After installing and loading `rwRtools`, this is the quickest way to set
-up a session for working on a particular Research Pod.
+After installing and loading `rwRtools`, the quickest way to set up a
+session for working on a particular Research Pod is:
 
 ``` r
 setup_for_pod(pod = "EquityFactors", path = ".")
@@ -104,18 +106,22 @@ authorisation step.
 
 ### Kick off an OAuth process to access The Lab’s cloud infrastructure
 
-If called in an interactive session, you will be prompted in a browser
-to select a Google Identity and copy and paste an authentication code
-back at the call site.
-
-This is useful if you need re-authorise, or if you want to access
-specific Lab objects in GCS without doing the entire setup process.
-
 ``` r
 rwlab_gc_auth()
 ```
 
+If called in an interactive session, you will be prompted in a browser
+to select a Google Identity and copy and paste an authentication code
+back at the call site.
+
+This is useful if you need re-authorise or if you want to access
+specific Lab objects in GCS without doing the entire setup process.
+
 ### Load all GCS objects for a Research Pod
+
+``` r
+load_pod_data(pod = "EequityFactors", path = ".")
+```
 
 This transfers all objects associated with a Pod from GCS to `path`,
 overwriting any existing local Pod objects.
@@ -124,11 +130,11 @@ This is useful if you need a fresh copy of the Pod’s datasets, but don’t
 need to re-authorise to GCS. Requires that you’ve already authorised to
 the relevant GCS bucket.
 
-``` r
-load_pod_data(pod = "EequityFactors", path = ".")
-```
-
 ### Load a specific GCS object
+
+``` r
+load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
+```
 
 This transfers a specifc object from GCS to `path`, overwriting any
 existing local instance of that object.
@@ -137,6 +143,6 @@ This is useful if you need a fresh copy of a single dataset, but don’t
 need to re-authorise to GCS. Requires that you’ve already authorised to
 the relevant GCS bucket.
 
-``` r
-load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
-```
+## Examples
+
+See [the examples](examples/) for more.
