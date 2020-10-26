@@ -55,7 +55,6 @@ devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 library(rwRtools)
 ```
 
-
 ## Quickstart: Set up for working on a Research Pod
 
 After installing and loading `rwRtools`, the quickest way to set up a session for working on a particular Research Pod is:
@@ -63,8 +62,10 @@ After installing and loading `rwRtools`, the quickest way to set up a session fo
 ### 1. Authorise to the data library
 
 ```{r, eval=FALSE, echo=TRUE}
-rwlab_gc_auth()
+rwlab_data_auth(oauth_email = "your-email@somewhere.com")
 ```
+
+`oauth_email` is the email address you use to log in to Robot Wealth's resources. 
 
 If called in an interactive session, you will be prompted in a browser to select a Google Identity and copy and paste an authentication code back at the call site.
 
@@ -100,15 +101,7 @@ load_lab_object(path = ".", pod = "EquityFactors", object = "clean_R1000.csv")
 
 This transfers a specifc object to `path`, overwriting any existing local instance of that object. 
 
-Requires that you've already authorised to the relevant GCS bucket.
-
-```{r, eval=FALSE, echo=TRUE}
-setup_for_pod(pod = "EquityFactors", path = ".")
-```
-
-This kicks off the OAuth process and if successful, transfers all objects associated with the Pod from GCS to `path`. 
-
-If your session is interactive, you will be prompted in a browser to select a Google Identity and copy and paste an authentication code back at the call site.
+Requires that you've already authorised to the relevant data library
 
 ## Examples
 

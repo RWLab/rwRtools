@@ -64,8 +64,11 @@ session for working on a particular Research Pod is:
 ### 1\. Authorise to the data library
 
 ``` r
-rwlab_gc_auth()
+rwlab_data_auth(oauth_email = "your-email@somewhere.com")
 ```
+
+`oauth_email` is the email address you use to log in to Robot Wealth’s
+resources.
 
 If called in an interactive session, you will be prompted in a browser
 to select a Google Identity and copy and paste an authentication code
@@ -114,18 +117,7 @@ load_lab_object(path = ".", pod = "EquityFactors", object = "clean_R1000.csv")
 This transfers a specifc object to `path`, overwriting any existing
 local instance of that object.
 
-Requires that you’ve already authorised to the relevant GCS bucket.
-
-``` r
-setup_for_pod(pod = "EquityFactors", path = ".")
-```
-
-This kicks off the OAuth process and if successful, transfers all
-objects associated with the Pod from GCS to `path`.
-
-If your session is interactive, you will be prompted in a browser to
-select a Google Identity and copy and paste an authentication code back
-at the call site.
+Requires that you’ve already authorised to the relevant data library
 
 ## Examples
 
