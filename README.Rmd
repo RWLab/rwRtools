@@ -20,15 +20,24 @@ knitr::opts_chunk$set(
 
 The goal of rwRtools is to make it easy to access The Lab's datasets and get started with research. 
 
-TODO: big up the lab, links to RW etc
+## What is The Lab?
 
-## Installation
+The Lab is [Robot Wealth's](https://robotwealth.com/) portal for collaborative research. 
 
-You can install rwRtools from GitHub like so:
+It is organized around **Research Pods,** which contain data, ideas, research and peer-reviewed edges for a given market question.
 
-``` r
-devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
-```
+For example:
+
+- in the *Equity Factor Research Pod* we look at the question: "*What factors predict the relative performance of stocks in the Russell 1000 index?"*
+- In the *Global Risk Premia Research Pod* we look at the question: "*What is the most effective way to get paid for taking on global market risks?* "
+
+## What is the purpose of The Lab?
+
+**The Lab serves three purposes:**
+
+1. It gets you hands-on with the research effort. As well as contributing, you'll learn a ton in the process. 
+2. It scales the research effort by enabling community contribution.
+3. It makes the fruits of that scaled research effort available to the entire community.
 
 ## Demo
 
@@ -40,6 +49,13 @@ The easiest way to install and load rwRtools and its dependencies is via the `pa
 if(!require("pacman")) install.packages("pacman")
 pacman::p_load_gh("RWLab/rwRtools", dependencies = TRUE)
 ```
+
+If you prfer, you can also use `devtools` to install:
+
+```{r, eval=FALSE, echo=TRUE}
+devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
+```
+
 
 ### Quickstart: Set up for working on a Research Pod
 
