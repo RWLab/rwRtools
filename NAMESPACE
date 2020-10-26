@@ -2,4 +2,5 @@
 
 export(load_pod_data)
 export(rwlab_gc_auth)
-export(rwlab_list_bucket_objects)
+export(rwlab_get_pod_meta)
+import(httr)

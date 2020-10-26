@@ -20,10 +20,12 @@ in a session asks the user to interactively specify a Google Identity and provid
 resulting code back to the call site.
 }
 \details{
-Internally sets \code{gargle::gargle_options}:
+Internally sets the following options:
 \itemize{
-\item \code{gargle_oauth_email}
-\item \code{gargle_oath_cache}
+\item \code{gargle::gargle_oauth_email}
+\item \code{gargle::gargle_oath_cache}
+\item \code{gargle::gargle_oob_default}
+\item \code{rlang::rlang_interactive} (if called from an interactive session)
 }
 
 See \code{\link[gargle:gargle_options]{gargle_options}} for details.

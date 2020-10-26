@@ -4,9 +4,11 @@
 #' in a session asks the user to interactively specify a Google Identity and provide the
 #' resulting code back to the call site.
 #'
-#' Internally sets `gargle::gargle_options`:
-#' - `gargle_oauth_email`
-#' - `gargle_oath_cache`
+#' Internally sets the following options:
+#' - `gargle::gargle_oauth_email`
+#' - `gargle::gargle_oath_cache`
+#' - `gargle::gargle_oob_default`
+#' - `rlang::rlang_interactive` (if called from an interactive session)
 #'
 #' See \code{\link[gargle:gargle_options]{gargle_options}} for details.
 #'
@@ -15,6 +17,8 @@
 #' @param oauth_email string, The email address you use to access The Lab. If NA (default), select interactively.
 #' @param oauth_cache bool, Cache the OAuth token for reuse until expiry
 #' @return an OAuth token object (invisibly)
+#'
+#' @import httr
 #' @export
 #' @examples
 #' \dontrun{rwlab_gc_auth()}
@@ -22,13 +26,15 @@ rwlab_gc_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
 
   if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
-    options(gargle_oob_default = TRUE)
+    options(
+      gargle_oob_default = TRUE,
+      rlang_interactive = TRUE
+    )
   } else {
     gargle_oob_default = FALSE
   }
 
-  options(
-    rlang_interactive = TRUE,
+    options(
     gargle_oauth_email = oauth_email,
     gargle_oauth_cache = oauth_cache
   )

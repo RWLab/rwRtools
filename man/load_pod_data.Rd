@@ -2,7 +2,7 @@
 % Please edit documentation in R/rwlab_gcs.R
 \name{load_pod_data}
 \alias{load_pod_data}
-\title{Transfer all data relevant to a specific research pod from Google Cloud and save to disk}
+\title{Transfer all data relevant to a specific Research Pod from Google Cloud and save to disk}
 \usage{
 load_pod_data(pod, path = ".")
 }

@@ -1,26 +1,41 @@
-#' List objects in a RW Lab Google Cloud bucket
+#' Get Research Pod metadata
 #'
-#' Requires authorisation. Set up prior with `rwlab_gc_auth`.
+#' Returns bucket and dataset names for a specified pod,
+#' or all pods if pod is unspecified.
 #'
-#' @param bucket string, The name of the bucket
+#' @param pod string, The name of the Research Pod. If NA, data for all pods is returned.
 #'
-#' @return A list of objects in `bucket`
+#' @return List of metadata for the specified Research Pod, or list of lists of metadata for all Pods if `pod` is NA.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' rwlab_gc_auth("your-email-address")
-#' rwlab_list_bucket_objects("rw_equity_research_sprint")
-#' }
-rwlab_list_bucket_objects <- function(bucket = "rw_equity_research_sprint") {
-  # TODO: if(.gcs_env$bucket != bucket) gcs_global_bucket(bucket)
-  googleCloudStorageR::gcs_global_bucket(bucket)
-  googleCloudStorageR::gcs_list_objects(bucket)
+#' bucket = rwlab_get_pod_meta("EquityFactors")[["bucket"]]
+#' datasets = rwlab_get_pod_meta("EquityFactors")[["datasets"]]
+#' all_pods_meta = rwlab_get_pod_meta()
+rwlab_get_pod_meta <- function(pod = NA) {
+  # intent is to make explicit the data to be used in a Research Pod
+  pod_meta <- list(
+    EquityFactors = list(
+      bucket = "rw_equity_research_sprint",
+      datasets = c("clean_R1000.csv", "fundamentals.csv")
+      )
+  )
+
+  if(is.na(pod)) {
+    pod_meta
+  }  else {
+    if(is.null(pod_meta[[pod]]))
+      stop("pod not found in list of Research Pods.")
+    pod_meta[[pod]]
+  }
+
 }
-# TODO: replace with a function that sets global bucket according to a named list of Pod - bucket name
 
+list_pods <- function() {
 
-#' Transfer all data relevant to a specific research pod from Google Cloud and save to disk
+}
+
+#' Transfer all data relevant to a specific Research Pod from Google Cloud and save to disk
 #'
 #' Requires authorisation. Set up prior with `rwlab_gc_auth`.
 #'
@@ -35,22 +50,20 @@ rwlab_list_bucket_objects <- function(bucket = "rw_equity_research_sprint") {
 #' load_pod_data("Equity Factors", "./data")
 #' }
 load_pod_data <- function(pod, path = ".") {
-  #TODO: get file size from gcs_list_objects??
-  if(pod == "Equity Factors") {
-    googleCloudStorageR::gcs_global_bucket("rw_equity_research_sprint")
-    print("Transferring clean_R1000.csv ... data is 874MB please be patient...")
-    if(googleCloudStorageR::gcs_get_object('clean_R1000.csv', saveToDisk = glue::glue("{path}/clean_R1000.csv"), overwrite = TRUE))
-       print("file successfully transferred")
-    else
-      stop("Error: file failed to transfer")
+  # TODO: check authorisation
+  # TODO: check file exists in bucket
 
-    print("Transferring fundamentals.csv ... data is 360MB please be patient...")
-    if(googleCloudStorageR::gcs_get_object('fundamentals.csv', saveToDisk = glue::glue("{path}/fundamentals.csv"), overwrite = TRUE))
-      print("file successfully transferred")
+  pod_meta = rwlab_get_pod_meta(pod) # datasets we want to use in the Pod
+  googleCloudStorageR::gcs_global_bucket(pod_meta[["bucket"]])
+  bucket_objects <- googleCloudStorageR::gcs_list_objects()  # datasets that exist in the Pod's bucket
+
+  cat("Attempting download of ", pod_meta[["datasets"]], "...\n")
+  for(dataset in pod_meta[["datasets"]]) {
+    cat("Transferring", dataset, "... data is",  bucket_objects[bucket_objects$name == dataset, "size"], "please be patient...\n")
+    if(googleCloudStorageR::gcs_get_object(dataset, saveToDisk = glue::glue("{path}/{dataset}"), overwrite = TRUE))
+      cat("file successfully transferred\n")
     else
       stop("Error: file failed to transfer")
-  } else {
-    print("Specified Research Pod is unknown - nothing loaded")
   }
 }
 

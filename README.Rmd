@@ -34,9 +34,12 @@ devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
 
 Authorise a Google Identity to access The Lab's cloud infrastructure by doing:
 
-```{r auth example, eval=FALSE, echo=TRUE}
-library(rwRtools)
-rwlab_gc_auth("your_email@somewhere.com")
+```{r auth example}
+# install and load required packages inc. dependencies  , eval=FALSE, echo=TRUE
+if(!require("pacman")) install.packages("pacman")
+pacman::p_load_gh("RWLab/rwRtools", dependencies = TRUE)
+
+rwlab_gc_auth()
 ```
 
 You will be prompted to select a Google Identity in a browser and the copy and paste an authentication code back at the call site.
