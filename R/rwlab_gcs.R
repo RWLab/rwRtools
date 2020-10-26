@@ -1,7 +1,7 @@
 #' Get Research Pod metadata
 #'
 #' Returns bucket and dataset names for a specified pod,
-#' or all pods if pod is unspecified.
+#' or all pods if `pod` is unspecified.
 #'
 #' @param pod string, The name of the Research Pod. If NA, data for all pods is returned.
 #'
@@ -9,10 +9,10 @@
 #' @export
 #'
 #' @examples
-#' bucket = rwlab_get_pod_meta("EquityFactors")[["bucket"]]
-#' datasets = rwlab_get_pod_meta("EquityFactors")[["datasets"]]
-#' all_pods_meta = rwlab_get_pod_meta()
-rwlab_get_pod_meta <- function(pod = NA) {
+#' bucket = get_pod_meta("EquityFactors")[["bucket"]]
+#' datasets = get_pod_meta("EquityFactors")[["datasets"]]
+#' all_pods_meta = get_pod_meta()
+get_pod_meta <- function(pod = NA) {
   # intent is to make explicit the data to be used in a Research Pod
   pod_meta <- list(
     EquityFactors = list(
@@ -31,17 +31,26 @@ rwlab_get_pod_meta <- function(pod = NA) {
 
 }
 
+#' Get the names of The Lab's Research Pods
+#'
+#' @return A character vector of the names of The Lab's Research Pods
+#' @export
+#'
+#' @examples
+#' list_pods()
 list_pods <- function() {
+
+  names(get_pod_meta())
 
 }
 
-#' Transfer all data relevant to a specific Research Pod from Google Cloud and save to disk
+#' Transfer all Research Pod data from Google Cloud to disk
 #'
 #' Requires authorisation. Set up prior with `rwlab_gc_auth`.
 #'
 #' @param pod string, The name of the research pod. Options: "Equity Factors" (others TBA)
 #' @param path string, Path to the folder where data will be saved. Defaults to root
-#' @return None, transfers data from Google Cloud to `path`
+#' @return bool specifying success (TRUE) or failure (FALSE) of object transfers. Returns FALSE on first failure.
 #' @export
 #'
 #' @examples
@@ -53,7 +62,7 @@ load_pod_data <- function(pod, path = ".") {
   # TODO: check authorisation
   # TODO: check file exists in bucket
 
-  pod_meta = rwlab_get_pod_meta(pod) # datasets we want to use in the Pod
+  pod_meta = get_pod_meta(pod) # datasets we want to use in the Pod
   googleCloudStorageR::gcs_global_bucket(pod_meta[["bucket"]])
   bucket_objects <- googleCloudStorageR::gcs_list_objects()  # datasets that exist in the Pod's bucket
 
@@ -61,15 +70,32 @@ load_pod_data <- function(pod, path = ".") {
   for(dataset in pod_meta[["datasets"]]) {
     cat("Transferring", dataset, "... data is",  bucket_objects[bucket_objects$name == dataset, "size"], "please be patient...\n")
     if(googleCloudStorageR::gcs_get_object(dataset, saveToDisk = glue::glue("{path}/{dataset}"), overwrite = TRUE))
-      cat("file successfully transferred\n")
-    else
-      stop("Error: file failed to transfer")
+      cat(dataset, "successfully transferred\n")
+    else {
+      cat(dataset, "failed to transfer\n")
+      return(FALSE)
+    }
   }
+
+  TRUE
 }
 
-# todo: expose and document
-load_data_object <- function(path, object, bucket = NA) {
-  "load a single specified data object"
+#' Transfer a single specified object from Google Cloud
+#'
+#' This is useful for reloading a specific object rather than transferring all Research Pod objects.
+#'
+#' @param path string, Local path for saving object
+#' @param object string, Name of the object to transfer
+#' @param bucket string, Name of object's bucket, NA uses gcs_global_bucket, default NA
+#'
+#' @return bool specifying success (TRUE) or failure (FALSE) of object transfer
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
+#' }
+load_lab_object <- function(path, object, bucket = NA) {
 # TODO: check object exists, get file size
   # note that gcs_ functions already have good checks and error handling (eg check if object exists) so no need to  reinvent that wheel
 
@@ -78,13 +104,30 @@ load_data_object <- function(path, object, bucket = NA) {
     bucket = googleCloudStorageR::gcs_get_global_bucket()
 
   # attempt object transfer
-  if(googleCloudStorageR::gcs_get_object(object = object, bucket = bucket, saveToDisk = glue::glue("{path}/object"), overwrite = TRUE))
-    print("file successfully transferred")
-  else
-    stop("Error: file failed to transfer")
+  if(googleCloudStorageR::gcs_get_object(object = object, bucket = bucket, saveToDisk = glue::glue("{path}/object"), overwrite = TRUE)) {
+    cat("File successfully transferred\n")
+    TRUE
+  } else {
+    cat("File failed to transfer\n")
+    FALSE
+  }
 }
 
-# todo: expose and documetn this functin
+#' Setup for a Research Pod
+#'
+#' Authorise to cloud storage and transfer data for a Research Pod
+#'
+#' @param pod string, The Research Pod to set up
+#' @param path string, The local path to use to save Pod data
+#' @param oauth_email string, optional, The email to authorise to cloud storage, default NA. NA requires interactively selecting an email
+#'
+#' @return bool specifying success (TRUE) or failure (FALSE) of Pod object transfers
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' setup_for_pod("EquityFactors")
+#' }
 setup_for_pod <- function(pod, path = ".", oauth_email = NA) {
   "do everything needed to get going with research pod - auth and load data"
   rwlab_gc_auth(oauth_email = oauth_email)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/rwlab_gcs.R
 \name{load_pod_data}
 \alias{load_pod_data}
-\title{Transfer all data relevant to a specific Research Pod from Google Cloud and save to disk}
+\title{Transfer all Research Pod data from Google Cloud to disk}
 \usage{
 load_pod_data(pod, path = ".")
 }
@@ -12,7 +12,7 @@ load_pod_data(pod, path = ".")
 \item{path}{string, Path to the folder where data will be saved. Defaults to root}
 }
 \value{
-None, transfers data from Google Cloud to \code{path}
+bool specifying success (TRUE) or failure (FALSE) of object transfers. Returns FALSE on first failure.
 }
 \description{
 Requires authorisation. Set up prior with \code{rwlab_gc_auth}.
