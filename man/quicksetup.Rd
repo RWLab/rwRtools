@@ -17,3 +17,8 @@ nothing, but saves Research Pod price data locally and populates Global Env with
 \description{
 Transfers prices data from Research Pod data library and adds it as a \code{data.frame} to the Global Environment
 }
+\examples{
+\dontrun{
+quickset("EquityFactors")
+}
+}

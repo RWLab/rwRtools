@@ -2,7 +2,7 @@
 
 export(get_pod_meta)
 export(list_pods)
-export(load_pod_object)
+export(load_lab_object)
 export(quicksetup)
 export(rwlab_data_auth)
 import(httr)

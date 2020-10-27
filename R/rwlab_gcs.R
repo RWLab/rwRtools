@@ -94,7 +94,7 @@ transfer_pod_data <- function(pod, path = ".") {
 #'
 #' @examples
 #' \dontrun{
-#' load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
+#' transfer_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
 #' }
 transfer_lab_object <- function(pod, object, path = ".") {
 # TODO: check object exists, get file size
@@ -146,6 +146,9 @@ load_lab_object <- function(pod, object, path = ".") {
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' quickset("EquityFactors")
+#' }
 quicksetup <- function(pod, path = ".") {
 
   pod_meta <- get_pod_meta(pod)

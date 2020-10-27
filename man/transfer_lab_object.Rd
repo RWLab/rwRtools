@@ -21,6 +21,6 @@ This is useful for reloading a specific object rather than transferring all Rese
 }
 \examples{
 \dontrun{
-load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
+transfer_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
 }
 }
