@@ -47,7 +47,7 @@ if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #> 
-#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKkF8yI\remotes7eac4fee278b\RWLab-rwRtools-4097946/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKkF8yI\remotes7eac4fee278b\RWLab-rwRtools-4097946/DESCRIPTION' (338ms)
+#>       v  checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmpg77WB6\remotes8bac7d0a66df\RWLab-rwRtools-dbe6129/DESCRIPTION' (343ms)
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
@@ -120,7 +120,7 @@ This outputs a list of all the data objects you can transfer for a Pod.
 ### 5\. Load specific additional Pod data objects
 
 ``` r
-load_lab_object(path = ".", pod = "EquityFactors", object = "clean_R1000.csv")
+load_lab_object(path = ".", pod = "EquityFactors", object = "R1000_ohlc_1d.feather")
 ```
 
 This transfers a specifc object to `path`, overwriting any existing

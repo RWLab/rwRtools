@@ -17,9 +17,9 @@ get_pod_meta <- function(pod = NA) {
   # also if we change the data or GCS bucket, we only need to make changes here
   pod_meta <- list(
     EquityFactors = list(
-      bucket = "rw_equity_research_sprint",
-      datasets = c("clean_R1000.csv", "fundamentals.csv"),
-      essentials = c("clean_R1000.csv")
+      bucket = "equity_factors_research_pod",
+      datasets = c("R1000_ohlc_1d.feather", "R1000_fundamental_1d.feather"),
+      essentials = c("R1000_ohlc_1d.feather")
       )
   )
 

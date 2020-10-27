@@ -96,7 +96,7 @@ This outputs a list of all the data objects you can transfer for a Pod.
 ### 5. Load specific additional Pod data objects
 
 ```{r, eval=FALSE, echo=TRUE}
-load_lab_object(path = ".", pod = "EquityFactors", object = "clean_R1000.csv")
+load_lab_object(path = ".", pod = "EquityFactors", object = "R1000_ohlc_1d.feather")
 ```
 
 This transfers a specifc object to `path`, overwriting any existing local instance of that object. 
