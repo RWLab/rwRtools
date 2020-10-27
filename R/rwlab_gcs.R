@@ -128,7 +128,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #'
 #' @examples
 #' \dontrun{
-#' load_lab_object("EquityFactors, "R1000_fundamentals_1d.feather")
+#' load_lab_object("EquityFactors", "R1000_fundamentals_1d.feather")
 #' }
 load_lab_object <- function(pod, object, path = ".") {
 
