@@ -47,7 +47,7 @@ if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #> 
-#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpisOatr\remotes66542d4f7203\RWLab-rwRtools-90d81af/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpisOatr\remotes66542d4f7203\RWLab-rwRtools-90d81af/DESCRIPTION' (336ms)
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOGI4JU\remotesa420428e1558\RWLab-rwRtools-90d81af/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOGI4JU\remotesa420428e1558\RWLab-rwRtools-90d81af/DESCRIPTION' (343ms)
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
@@ -85,7 +85,7 @@ list_pods()
 ### 3\. Load essential Pod data
 
 ``` r
-load_pod_data(pod = "EquityFactors", path = ".")
+quicksetup(pod = "EquityFactors", path = ".")
 ```
 
 This transfers the essential data that you always need to `path` (ohlc,
@@ -112,7 +112,7 @@ This outputs a list of all the data objects you can transfer for a Pod.
 ### 5\. Load specific additional Pod data objects
 
 ``` r
-load_lab_object(path = ".", pod = "EquityFactors", object = "R1000_ohlc_1d.feather")
+load_lab_object(pod = "EquityFactors", object = "R1000_ohlc_1d.feather", path = ".")
 ```
 
 This transfers a specifc object to `path`, overwriting any existing

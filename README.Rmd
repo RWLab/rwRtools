@@ -71,7 +71,7 @@ list_pods()
 ### 3. Load essential Pod data
  
 ```{r, eval=FALSE, echo=TRUE}
-load_pod_data(pod = "EquityFactors", path = ".")
+quicksetup(pod = "EquityFactors", path = ".")
 ```
 
 This transfers the essential data that you always need to `path` (ohlc, metadata), overwriting any existing local Pod objects. 
@@ -89,7 +89,7 @@ This outputs a list of all the data objects you can transfer for a Pod.
 ### 5. Load specific additional Pod data objects
 
 ```{r, eval=FALSE, echo=TRUE}
-load_lab_object(path = ".", pod = "EquityFactors", object = "R1000_ohlc_1d.feather")
+load_lab_object(pod = "EquityFactors", object = "R1000_ohlc_1d.feather", path = ".")
 ```
 
 This transfers a specifc object to `path`, overwriting any existing local instance of that object. 
