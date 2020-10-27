@@ -132,7 +132,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #' }
 load_lab_object <- function(pod, object, path = ".") {
 
-  if(transfer_lab_object(path, pod, object)) {
+  if(transfer_lab_object(pod = pod, object = object, path = path)) {
     feather::read_feather(glue::glue("{path}/{object}"))
   }
 }
