@@ -17,6 +17,6 @@ Imports:
     glue,
     googleCloudStorageR,
     R.utils,
-    arrow
+    feather
 Depends:
     httr

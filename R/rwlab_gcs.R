@@ -133,7 +133,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 load_pod_object <- function(pod, object, path = ".") {
 
   if(transfer_lab_object(path, pod, object)) {
-    arrow::read_feather(glue::glue("{path}/{object}"))
+    feather::read_feather(glue::glue("{path}/{object}"))
   }
 }
 
@@ -152,7 +152,7 @@ quicksetup <- function(pod, path = ".") {
   prices_file <- pod_meta[["prices"]]
 
   if(transfer_pod_data(pod, path = path)) {
-    prices <- arrow::read_feather(glue::glue("{path}/{prices_file}"))
+    prices <- feather::read_feather(glue::glue("{path}/{prices_file}"))
     assign("prices", prices, envri = .GlobalEnv)
     cat("prices data object transferred and loaded as data.frame to Global Env\n")
   } else {

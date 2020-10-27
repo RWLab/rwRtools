@@ -70,9 +70,11 @@ list_pods()
 
 ### 3. Load essential Pod data
 
-This transfers price data from the data library and loads it into the Global Environment as the `prices` object. 
+This transfers price data from the data library to `path` and loads it into the Global Environment as the `prices` object. 
 
-**IMPORTANT: It overwrites any object you might have in your Global Environment with that variable name.**
+**IMPORTANT: It overwrites any object you might have in your Global Environment with that variable name, or locally at `path` with the Research Pod prices file name.**
+
+Requires that you have authorised to the data library prior.
  
 ```{r, eval=FALSE, echo=TRUE}
 quicksetup(pod = "EquityFactors", path = ".")

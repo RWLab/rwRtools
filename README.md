@@ -47,7 +47,7 @@ if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #> 
-#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOSpcoX\remotes87bc294bd02\RWLab-rwRtools-a26acab/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOSpcoX\remotes87bc294bd02\RWLab-rwRtools-a26acab/DESCRIPTION' (399ms)
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmp0G0q2Y\remotes39242d5d1337\RWLab-rwRtools-81b4803/DESCRIPTION' ... OK  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmp0G0q2Y\remotes39242d5d1337\RWLab-rwRtools-81b4803/DESCRIPTION'
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
@@ -84,11 +84,14 @@ list_pods()
 
 ### 3\. Load essential Pod data
 
-This transfers price data from the data library and loads it into the
-Global Environment as the `prices` object.
+This transfers price data from the data library to `path` and loads it
+into the Global Environment as the `prices` object.
 
 **IMPORTANT: It overwrites any object you might have in your Global
-Environment with that variable name.**
+Environment with that variable name, or locally at `path` with the
+Research Pod prices file name.**
+
+Requires that you have authorised to the data library prior.
 
 ``` r
 quicksetup(pod = "EquityFactors", path = ".")
