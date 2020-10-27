@@ -47,7 +47,7 @@ if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #> 
-#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOGI4JU\remotesa420428e1558\RWLab-rwRtools-90d81af/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOGI4JU\remotesa420428e1558\RWLab-rwRtools-90d81af/DESCRIPTION' (343ms)
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOSpcoX\remotes87bc294bd02\RWLab-rwRtools-a26acab/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpOSpcoX\remotes87bc294bd02\RWLab-rwRtools-a26acab/DESCRIPTION' (399ms)
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
@@ -84,8 +84,17 @@ list_pods()
 
 ### 3\. Load essential Pod data
 
+This transfers price data from the data library and loads it into the
+Global Environment as the `prices` object.
+
+**IMPORTANT: It overwrites any object you might have in your Global
+Environment with that variable name.**
+
 ``` r
 quicksetup(pod = "EquityFactors", path = ".")
+
+prices %>% 
+  head()
 ```
 
 This transfers the essential data that you always need to `path` (ohlc,
@@ -101,9 +110,12 @@ get_pod_meta(pod = "EquityFactors")
 #> [1] "equity_factors_research_pod"
 #> 
 #> $datasets
-#> [1] "R1000_ohlc_1d.feather"        "R1000_fundamental_1d.feather"
+#> [1] "R1000_ohlc_1d.feather"         "R1000_fundamentals_1d.feather"
 #> 
 #> $essentials
+#> [1] "R1000_ohlc_1d.feather"
+#> 
+#> $prices
 #> [1] "R1000_ohlc_1d.feather"
 ```
 

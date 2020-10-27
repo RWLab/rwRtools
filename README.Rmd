@@ -69,9 +69,16 @@ list_pods()
 ```
 
 ### 3. Load essential Pod data
+
+This transfers price data from the data library and loads it into the Global Environment as the `prices` object. 
+
+**IMPORTANT: It overwrites any object you might have in your Global Environment with that variable name.**
  
 ```{r, eval=FALSE, echo=TRUE}
 quicksetup(pod = "EquityFactors", path = ".")
+
+prices %>% 
+  head()
 ```
 
 This transfers the essential data that you always need to `path` (ohlc, metadata), overwriting any existing local Pod objects. 
