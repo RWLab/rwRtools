@@ -46,8 +46,12 @@ via the `pacman` library:
 if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
+#> tibble (3.0.3 -> 3.0.4) [CRAN]
+#> package 'tibble' successfully unpacked and MD5 sums checked
 #> 
-#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmp0G0q2Y\remotes39242d5d1337\RWLab-rwRtools-81b4803/DESCRIPTION' ... OK  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmp0G0q2Y\remotes39242d5d1337\RWLab-rwRtools-81b4803/DESCRIPTION'
+#> The downloaded binary packages are in
+#>  C:\Users\Kris\AppData\Local\Temp\RtmpKurQPb\downloaded_packages
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKurQPb\remotes7d6017485573\RWLab-rwRtools-3fc66b9/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpKurQPb\remotes7d6017485573\RWLab-rwRtools-3fc66b9/DESCRIPTION' (489ms)
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
