@@ -47,7 +47,7 @@ if(!require("pacman")) install.packages("pacman")
 #> Loading required package: pacman
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #> 
-#>       v  checking for file 'C:\Users\Kris\AppData\Local\Temp\Rtmpg77WB6\remotes8bac7d0a66df\RWLab-rwRtools-dbe6129/DESCRIPTION' (343ms)
+#>          checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpisOatr\remotes66542d4f7203\RWLab-rwRtools-90d81af/DESCRIPTION' ...  v  checking for file 'C:\Users\Kris\AppData\Local\Temp\RtmpisOatr\remotes66542d4f7203\RWLab-rwRtools-90d81af/DESCRIPTION' (336ms)
 #>       -  preparing 'rwRtools':
 #>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
 #>       -  checking for LF line-endings in source and make files and shell scripts
@@ -55,14 +55,6 @@ pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 #>       -  building 'rwRtools_0.0.0.9001.tar.gz'
 #>      
 #> 
-```
-
-If you prfer, you can also use `devtools` to install, and the load via
-`library`:
-
-``` r
-devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
-library(rwRtools)
 ```
 
 ## Quickstart: Set up for working on a Research Pod
@@ -106,13 +98,13 @@ Requires that you’ve already authorised to the relevant GCS bucket.
 ``` r
 get_pod_meta(pod = "EquityFactors")
 #> $bucket
-#> [1] "rw_equity_research_sprint"
+#> [1] "equity_factors_research_pod"
 #> 
 #> $datasets
-#> [1] "clean_R1000.csv"  "fundamentals.csv"
+#> [1] "R1000_ohlc_1d.feather"        "R1000_fundamental_1d.feather"
 #> 
 #> $essentials
-#> [1] "clean_R1000.csv"
+#> [1] "R1000_ohlc_1d.feather"
 ```
 
 This outputs a list of all the data objects you can transfer for a Pod.

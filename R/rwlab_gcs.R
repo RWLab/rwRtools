@@ -18,8 +18,9 @@ get_pod_meta <- function(pod = NA) {
   pod_meta <- list(
     EquityFactors = list(
       bucket = "equity_factors_research_pod",
-      datasets = c("R1000_ohlc_1d.feather", "R1000_fundamental_1d.feather"),
-      essentials = c("R1000_ohlc_1d.feather")
+      datasets = c("R1000_ohlc_1d.feather", "R1000_fundamentals_1d.feather"),
+      essentials = c("R1000_ohlc_1d.feather"),
+      prices = c("R1000_ohlc_1d.feather")
       )
   )
 
@@ -53,14 +54,13 @@ list_pods <- function() {
 #' @param pod string, The name of the research pod. Options: "Equity Factors" (others TBA)
 #' @param path string, Path to the folder where data will be saved. Defaults to root
 #' @return bool specifying success (TRUE) or failure (FALSE) of object transfers. Returns FALSE on first failure.
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' rwlab_gc_auth("your-email-address")
-#' load_pod_data("Equity Factors", "./data")
+#' transfer_pod_data("Equity Factors", "./data")
 #' }
-load_pod_data <- function(pod, path = ".") {
+transfer_pod_data <- function(pod, path = ".") {
   # TODO: check authorisation
   # TODO: check file exists in bucket
 
@@ -82,22 +82,21 @@ load_pod_data <- function(pod, path = ".") {
   TRUE
 }
 
-#' Transfer a single specified object from Google Cloud
+#' Transfer a single specified object from data library
 #'
 #' This is useful for reloading a specific object rather than transferring all Research Pod objects.
 #'
-#' @param path string, Local path for saving object
 #' @param pod string, Name of the Research Pod
 #' @param object string, Name of the object to transfer
+#' @param path string, Local path for saving object, defaults to "."
 #'
-#' @return bool specifying success (TRUE) or failure (FALSE) of object transfer
-#' @export
+#' @return `bool` specifying success (TRUE) or failure (FALSE) of object transfer
 #'
 #' @examples
 #' \dontrun{
 #' load_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
 #' }
-load_lab_object <- function(path, pod, object) {
+transfer_lab_object <- function(pod, object, path = ".") {
 # TODO: check object exists, get file size
   # note that gcs_ functions already have good checks and error handling (eg check if object exists) so no need to  reinvent that wheel
 
@@ -116,4 +115,48 @@ load_lab_object <- function(path, pod, object) {
     cat("File failed to transfer\n")
     FALSE
   }
+}
+
+#' Transfer object from data library and return it as a `data.frame`
+#'
+#' @param pod string, The name of the Research Pod
+#' @param object string, The name of the data object
+#' @param path string, The local path to the directory to save the data object. defaults to "."
+#'
+#' @return `object` as a `data.frame`
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' load_pod_object("EquityFactors, "R1000_fundamentals_1d.feather")
+#' }
+load_pod_object <- function(pod, object, path = ".") {
+
+  if(transfer_lab_object(path, pod, object)) {
+    arrow::read_feather(glue::glue("{path}/{object}"))
+  }
+}
+
+#' Transfers prices data from Research Pod data library and adds it as a `data.frame` to the Global Environment
+#'
+#' @param pod string, The name of the Research Pod
+#' @param path string, The path to the local directory to save the transferred data
+#'
+#' @return nothing, but saves Research Pod price data locally and populates Global Env with a `data.frame`
+#' @export
+#'
+#' @examples
+quicksetup <- function(pod, path = ".") {
+
+  pod_meta <- get_pod_meta(pod)
+  prices_file <- pod_meta[["prices"]]
+
+  if(transfer_pod_data(pod, path = path)) {
+    prices <- arrow::read_feather(glue::glue("{path}/{prices_file}"))
+    assign("prices", prices, envri = .GlobalEnv)
+    cat("prices data object transferred and loaded as data.frame to Global Env\n")
+  } else {
+    cat("Nothing added to Global Env\n")
+  }
+
 }

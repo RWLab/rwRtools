@@ -22,7 +22,7 @@
 #' @export
 #' @examples
 #' \dontrun{rwlab_data_auth()}
-rwlab_data_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
+rwlab_data_auth <- function(oauth_email = NA, oauth_cache = FALSE) {
 
   if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
@@ -41,6 +41,8 @@ rwlab_data_auth <- function(oauth_email = NA, oauth_cache = TRUE) {
 
   tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform")
   googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default())
+
+  cat("Authorisation complete\n")
 
 }
 

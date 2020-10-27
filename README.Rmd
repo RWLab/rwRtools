@@ -48,13 +48,6 @@ if(!require("pacman")) install.packages("pacman")
 pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 ```
 
-If you prfer, you can also use `devtools` to install, and the load via `library`:
-
-```{r, eval=FALSE, echo=TRUE}
-devtools::install_github("RWLab/rwRtools", dependencies = TRUE)
-library(rwRtools)
-```
-
 ## Quickstart: Set up for working on a Research Pod
 
 After installing and loading `rwRtools`, the quickest way to set up a session for working on a particular Research Pod is:
