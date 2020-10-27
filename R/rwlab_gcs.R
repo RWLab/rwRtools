@@ -130,7 +130,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #' \dontrun{
 #' load_pod_object("EquityFactors, "R1000_fundamentals_1d.feather")
 #' }
-load_pod_object <- function(pod, object, path = ".") {
+load_lab_object <- function(pod, object, path = ".") {
 
   if(transfer_lab_object(path, pod, object)) {
     feather::read_feather(glue::glue("{path}/{object}"))
