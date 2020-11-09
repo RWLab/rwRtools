@@ -157,7 +157,7 @@ quicksetup <- function(pod, path = ".") {
   if(transfer_pod_data(pod, path = path)) {
     prices <- feather::read_feather(glue::glue("{path}/{prices_file}"))
     # Ensure date column is a date.
-    prices$date <- lubridate::date(date)
+    prices$date <- lubridate::date(prices$date)
     assign("prices", prices, envir = .GlobalEnv)
     cat("prices data object transferred and loaded as data.frame to Global Env\n")
   } else {
