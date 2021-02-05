@@ -42,7 +42,5 @@ rwlab_data_auth <- function(oauth_email = NA, oauth_cache = FALSE) {
   tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform")
   googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default())
 
-  cat("Authorisation complete\n")
-
 }
 

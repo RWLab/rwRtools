@@ -21,7 +21,13 @@ get_pod_meta <- function(pod = NA) {
       datasets = c("R1000_ohlc_1d.feather", "R1000_fundamentals_1d.feather"),
       essentials = c("R1000_ohlc_1d.feather"),
       prices = c("R1000_ohlc_1d.feather")
-      )
+      ),
+    FX = list(
+      bucket = "fx_research_pod",
+      datasets = NA,
+      essentials = NA,
+      prices = NA
+    )
   )
 
   if(is.na(pod)) {
@@ -66,6 +72,10 @@ transfer_pod_data <- function(pod, path = ".") {
 
   pod_meta = get_pod_meta(pod) # datasets we want to use in the Pod
   googleCloudStorageR::gcs_global_bucket(pod_meta[["bucket"]])
+  if(is.na(pod_meta[["essentials"]])) {
+    cat("Pod not compatible with bulk transfer of data. Transfer objects individually.")
+    return()
+  }
   bucket_objects <- googleCloudStorageR::gcs_list_objects()  # datasets that exist in the Pod's bucket
 
   cat("Attempting download of ", pod_meta[["essentials"]], "...\n")
