@@ -112,11 +112,22 @@ transfer_lab_object <- function(pod, object, path = ".") {
 
   pod_meta = get_pod_meta(pod)
 
+  # if using a "directory structure" in GCS, object names will look like file paths
+  if(length(strsplit(object, "/")[[1]]) > 1) {
+    on_disk_name <- tail(strsplit(object, "/")[[1]], 1)
+  } else {
+    on_disk_name <- object
+  }
+
+  if(!dir.exists(path)) {
+    dir.create(path)
+  }
+
   # attempt object transfer
   if(googleCloudStorageR::gcs_get_object(
     object = object,
     bucket = pod_meta[["bucket"]],
-    saveToDisk = glue::glue("{path}/{object}"),
+    saveToDisk = glue::glue("{path}/{on_disk_name}"),
     overwrite = TRUE
     )) {
     cat("File successfully transferred\n")
@@ -142,8 +153,15 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #' }
 load_lab_object <- function(pod, object, path = ".") {
 
+  # if using a "directory structure" in GCS, object names will look like file paths
+  if(length(strsplit(object, "/")[[1]]) > 1) {
+    on_disk_name <- tail(strsplit(object, "/")[[1]], 1)
+  } else {
+    on_disk_name <- object
+  }
+
   if(transfer_lab_object(pod = pod, object = object, path = path)) {
-    feather::read_feather(glue::glue("{path}/{object}"))
+    feather::read_feather(glue::glue("{path}/{on_disk_name}"))
   }
 }
 
