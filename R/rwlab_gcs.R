@@ -160,6 +160,10 @@ load_lab_object <- function(pod, object, path = ".") {
     on_disk_name <- object
   }
 
+  if(!dir.exists(path)) {
+    dir.create(path)
+  }
+
   if(transfer_lab_object(pod = pod, object = object, path = path)) {
     feather::read_feather(glue::glue("{path}/{on_disk_name}"))
   }
