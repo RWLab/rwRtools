@@ -17,7 +17,7 @@
 #' \dontrun{
 #' fx_get_asset_list("AssetsDWX-FX-USD")
 #' }
-fx_get_asset_list <- function(asset_list, path = "Zorro-Assets-Lists", force_update = FALSE) {
+fx_get_asset_list <- function(asset_list, path = "Zorro-Assets-Lists", force_update = TRUE) {
   if(!file.exists(file.path(path, glue::glue('{asset_list}.csv'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "FX",
@@ -42,13 +42,12 @@ fx_get_asset_list <- function(asset_list, path = "Zorro-Assets-Lists", force_upd
 #' @param force_update Force download and overwrite exsiting files
 #'
 #' @return A data.frame of market data.
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' fx_get_daily_OHLC_ticker("EURUSD")
 #' }
-fx_get_daily_OHLC_ticker <- function(ticker, path = "Daily", force_update = FALSE) {
+fx_get_daily_OHLC_ticker <- function(ticker, path = "Daily", force_update = TRUE) {
   if(!file.exists(file.path(path, glue::glue("{ticker}.feather"))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "FX",
@@ -75,7 +74,6 @@ fx_get_daily_OHLC_ticker <- function(ticker, path = "Daily", force_update = FALS
 #' @param force_update Force download and overwrite exsiting files
 #'
 #' @return A data.frame of market data.
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -195,7 +193,7 @@ fx_convert_common_quote_currency <- function(prices_df, quote_currency = "USD") 
 #' \dontrun{
 #' fx_get_policy_rates(c("AUD", "NZD", "GBP"))
 #' }
-fx_get_policy_rates <- function(currencies, path = "Policy-Rates", force_update = FALSE) {
+fx_get_policy_rates <- function(currencies, path = "Policy-Rates", force_update = TRUE) {
   l <- purrr::map(currencies, function(currency) {
     if(!file.exists(file.path(path, glue::glue("{currency}.csv"))) || force_update == TRUE) {
       transfer_lab_object(
