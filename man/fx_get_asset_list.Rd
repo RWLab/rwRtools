@@ -4,11 +4,7 @@
 \alias{fx_get_asset_list}
 \title{Load a Zorro Assets List}
 \usage{
-fx_get_asset_list(
-  asset_list,
-  path = "Zorro-Assets-Lists",
-  force_update = FALSE
-)
+fx_get_asset_list(asset_list, path = "Zorro-Assets-Lists", force_update = TRUE)
 }
 \arguments{
 \item{asset_list}{The name of the Zorro Asset List to load, without the

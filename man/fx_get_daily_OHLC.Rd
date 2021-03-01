@@ -20,3 +20,8 @@ A long data.frame of market data.
 Returns a data.frame of market data with columns
 Ticker, Date, Open, High, Low, Close, Volume
 }
+\examples{
+\dontrun{
+fx_get_daily_OHLC(c("EURUSD", "AUDUSD"))
+}
+}

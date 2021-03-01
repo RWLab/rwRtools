@@ -24,6 +24,8 @@ Imports:
     dplyr,
     purrr,
     zoo,
-    magrittr
+    magrittr, 
+    TTR,
+    doParallel
 Depends:
     httr

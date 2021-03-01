@@ -4,7 +4,7 @@
 \alias{fx_get_daily_OHLC_ticker}
 \title{Load historical daily price data of a ticker}
 \usage{
-fx_get_daily_OHLC_ticker(ticker, path = "Daily", force_update = FALSE)
+fx_get_daily_OHLC_ticker(ticker, path = "Daily", force_update = TRUE)
 }
 \arguments{
 \item{ticker}{The ticker to load.}

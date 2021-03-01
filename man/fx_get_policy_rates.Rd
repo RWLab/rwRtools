@@ -4,7 +4,7 @@
 \alias{fx_get_policy_rates}
 \title{Load historical central bank policy rates}
 \usage{
-fx_get_policy_rates(currencies, path = "Policy-Rates", force_update = FALSE)
+fx_get_policy_rates(currencies, path = "Policy-Rates", force_update = TRUE)
 }
 \arguments{
 \item{currencies}{A chr vector of currencies}
