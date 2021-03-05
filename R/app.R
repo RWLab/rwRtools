@@ -1,5 +1,7 @@
 #' Create oauth app for use in the lab
 #'
+#' Surprisingly, the “client secret” in an oauth_app() is not a secret. It’s not equivalent to a password, and if you are writing an API wrapper package, it should be included in the package. [(If you don’t believe me, here are google’s comments on the topic.)](https://developers.google.com/identity/protocols/OAuth2#installed)
+#'
 #' @return oauth app
 #'
 get_lab_app <- function() {

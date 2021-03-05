@@ -15,7 +15,7 @@ rwlab_data_auth(oauth_email = NA, oauth_cache = FALSE)
 an OAuth token object (invisibly)
 }
 \description{
-Authorise a Google Identity to access The Lab's cloud infrastructure. The first call
+Authorise a Google Identity to access The Lab's cloud infrastructure via web browser. The first call
 in a session asks the user to interactively specify a Google Identity and provide the
 resulting code back to the call site.
 }
