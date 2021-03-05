@@ -1,6 +1,6 @@
 #' Interactively authorise a Google Identity and load Oauth2 token
 #'
-#' Authorise a Google Identity to access The Lab's cloud infrastructure. The first call
+#' Authorise a Google Identity to access The Lab's cloud infrastructure via web browser. The first call
 #' in a session asks the user to interactively specify a Google Identity and provide the
 #' resulting code back to the call site.
 #'
@@ -27,20 +27,21 @@ rwlab_data_auth <- function(oauth_email = NA, oauth_cache = FALSE) {
   if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
     options(
-      gargle_oob_default = TRUE,
       rlang_interactive = TRUE
     )
-  } else {
-    gargle_oob_default = FALSE
   }
 
-    options(
+  gargle_oob_default = TRUE
+
+  options(
     gargle_oauth_email = oauth_email,
     gargle_oauth_cache = oauth_cache
   )
 
-  tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform")
-  googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default())
+  app = get_lab_app()
+
+  tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform", app = app)
+  googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default(), app = app)
 
 }
 
