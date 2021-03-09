@@ -5,9 +5,17 @@
 #' @return oauth app
 #'
 get_lab_app <- function() {
-  # old oauth from gargle 0.5.0 (naughty naughty)
-  httr::oauth_app("rwlab", '603366585132-0l5tra7gl2i20iftqangp7iskte4f3s0.apps.googleusercontent.com', 'bQJYd0bRVkGJiWV-nSxK2Zgc', "urn:ietf:wg:oauth:2.0:oob")
-
-  # new rw oauth...pending verification
-  # httr::oauth_app("rwlab", '598941630242-e973c0tf7k834upma9ld4m5n23fotet8.apps.googleusercontent.com', 'QPtBkrFmTKWpGmIWr-nU4eX2', "urn:ietf:wg:oauth:2.0:oob")
+  gla()
 }
+
+# snippet: rw load fx research pod libraries for data utils v0.1a
+# if(!require("pacman")) install.packages("pacman")
+# pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
+# pacman::p_load(tidyverse)
+
+# # we need to revert to an earlier version of gragle, which also requires unloading googleAuthR
+# unloadNamespace("googleAuthR")
+# unloadNamespace("gargle")
+# package = "https://cran.r-project.org/package=gargle&version=0.5.0"
+# utils::install.packages(pkgs = package, repos = NULL)
+# library(gargle)
