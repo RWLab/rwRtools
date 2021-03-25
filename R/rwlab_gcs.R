@@ -27,6 +27,12 @@ get_pod_meta <- function(pod = NA) {
       datasets = NA,
       essentials = NA,
       prices = NA
+    ),
+    Crypto = list (
+      bucket = "crypto_research_pod",
+      datasets = c("coinmetrics.csv"),
+      essentials = NA,
+      prices = NA
     )
   )
 
