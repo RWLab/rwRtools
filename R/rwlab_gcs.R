@@ -31,8 +31,8 @@ get_pod_meta <- function(pod = NA) {
     Crypto = list (
       bucket = "crypto_research_pod",
       datasets = c("coinmetrics.csv"),
-      essentials = NA,
-      prices = NA
+      essentials = c("coinmetrics.csv"),
+      prices = c("coinmetrics.csv")
     )
   )
 
@@ -193,7 +193,19 @@ quicksetup <- function(pod, path = ".") {
   prices_file <- pod_meta[["prices"]]
 
   if(transfer_pod_data(pod, path = path)) {
-    prices <- feather::read_feather(glue::glue("{path}/{prices_file}"))
+    if(stringr::str_detect(prices_file, ".feather")) {
+      prices <- feather::read_feather(glue::glue("{path}/{prices_file}"))
+    }
+    else if(any(stringr::str_detect(prices_file, c(".csv", ".txt")))) {
+      col_types = NULL
+
+      if(prices_file == "coinmetrics.csv") {
+        col_types = 'Dddddddddddddddddddddddddcddddddddddddddddddddd'
+      }
+
+      prices <- readr::read_csv(glue::glue("{path}/{prices_file}"), col_types = col_types)
+    }
+
     # Ensure date column is a date.
     prices$date <- lubridate::date(prices$date)
     assign("prices", prices, envir = .GlobalEnv)

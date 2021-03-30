@@ -26,7 +26,7 @@ crypto_get_coinmetrics <- function(path = "coinmetrics", force_update = TRUE) {
     col_types = 'Dddddddddddddddddddddddddcddddddddddddddddddddd'
 
   )
-  df <- df %>% arrange(asset,date)
+  df <- df %>% arrange(asset, date)
 
 df
 }

@@ -24,24 +24,27 @@
 #' \dontrun{rwlab_data_auth()}
 rwlab_data_auth <- function(oauth_email = NA, oauth_cache = FALSE) {
 
-  if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {  #
+  options(
+    gargle_oauth_email = oauth_email,
+    gargle_oauth_cache = oauth_cache,
+    gargle_oob_default = TRUE
+  )
+
+  if (length(Sys.glob("/usr/local/lib/python*/dist-packages/google/colab/_ipython.py")) > 0 || interactive()) {
     R.utils::reassignInPackage("is_interactive", pkgName = "httr", function() return(TRUE))
     options(
       rlang_interactive = TRUE
     )
   }
 
-  gargle_oob_default = TRUE
+  googleAuthR::gar_auth_configure(app = get_lab_app())
 
-  options(
-    gargle_oauth_email = oauth_email,
-    gargle_oauth_cache = oauth_cache
+  # this wraps gargle::token_fetch, which steps through several credential-fetching functions.
+  googleAuthR::gar_auth(
+    scopes = "https://www.googleapis.com/auth/cloud-platform",
+    use_oob = gargle::gargle_oob_default(),
+    app = googleAuthR::gar_oauth_app()
   )
-
-  app = get_lab_app()
-
-  tt <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform", app = app)
-  googleAuthR::gar_auth(token = tt, use_oob = gargle::gargle_oob_default(), app = app)
 
 }
 
