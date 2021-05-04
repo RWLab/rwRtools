@@ -206,7 +206,8 @@ quicksetup <- function(pod, path = ".") {
       col_types = NULL
 
       if(prices_file == "coinmetrics.csv") {
-        col_types = 'Dddddddddddddddddddddddddcddddddddddddddddddddd'
+        col_types <- 'Dddddddddddddddddddddddddddddddddddddddddddddddc'
+
       }
 
       prices <- readr::read_csv(glue::glue("{path}/{prices_file}"), col_types = col_types)

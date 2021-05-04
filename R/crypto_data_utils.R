@@ -23,10 +23,11 @@ crypto_get_coinmetrics <- function(path = "coinmetrics", force_update = TRUE) {
 
  df <- readr::read_csv(
     file.path(path, glue::glue('coinmetrics.csv')),
-    col_types = 'Dddddddddddddddddddddddddcddddddddddddddddddddd'
+    col_types = 'Dddddddddddddddddddddddddddddddddddddddddddddddc'
+
 
   )
-  df <- df %>% arrange(asset, date)
+  df <- dplyr::arrange(df,asset, date)
 
 df
 }
