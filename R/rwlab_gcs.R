@@ -206,11 +206,10 @@ quicksetup <- function(pod, path = ".") {
       col_types = NULL
 
       if(prices_file == "coinmetrics.csv") {
-        col_types <- 'Dddddddddddddddddddddddddddddddddddddddddddddddc'
+        prices <- rwRtools::crypto_get_coinmetrics(path=path, force_update = FALSE)
 
       }
 
-      prices <- readr::read_csv(glue::glue("{path}/{prices_file}"), col_types = col_types)
     }
 
     # Ensure date column is a date.

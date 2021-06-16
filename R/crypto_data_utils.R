@@ -23,11 +23,12 @@ crypto_get_coinmetrics <- function(path = "coinmetrics", force_update = TRUE) {
 
  df <- readr::read_csv(
     file.path(path, glue::glue('coinmetrics.csv')),
-    col_types = 'Dddddddddddddddddddddddddddddddddddddddddddddddc'
+    guess_max = 500000
 
 
   )
   df <- dplyr::arrange(df,asset, date)
+  df <- dplyr::select(df,asset,date,PriceUSD,PriceBTC,Price_in_USD_or_index_value)
 
 df
 }
