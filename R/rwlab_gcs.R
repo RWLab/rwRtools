@@ -30,7 +30,7 @@ get_pod_meta <- function(pod = NA) {
     ),
     Crypto = list (
       bucket = "crypto_research_pod",
-      datasets = c("coinmetrics.csv"),
+      datasets = c("coinmetrics.csv","ftx_spot_ohlc_1h.feather","ftx_perpetual_funding_rates.feather","ftx_index_ohlc_1h.feather","ftx_futures_ohlc_1h.feather","ftx_coin_lending_rates.feather"),
       essentials = c("coinmetrics.csv"),
       prices = c("coinmetrics.csv")
     ),
@@ -206,11 +206,10 @@ quicksetup <- function(pod, path = ".") {
       col_types = NULL
 
       if(prices_file == "coinmetrics.csv") {
-        col_types <- 'Dddddddddddddddddddddddddddddddddddddddddddddddc'
+        prices <- rwRtools::crypto_get_coinmetrics(path=path, force_update = FALSE)
 
       }
 
-      prices <- readr::read_csv(glue::glue("{path}/{prices_file}"), col_types = col_types)
     }
 
     # Ensure date column is a date.

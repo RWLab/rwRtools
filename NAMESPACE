@@ -2,6 +2,11 @@
 
 export("%>%")
 export(crypto_get_coinmetrics)
+export(crypto_get_futures)
+export(crypto_get_index)
+export(crypto_get_lending_rates)
+export(crypto_get_perp_rates)
+export(crypto_get_spot)
 export(fx_convert_common_quote_currency)
 export(fx_get_asset_list)
 export(fx_get_daily_OHLC)
