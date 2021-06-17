@@ -27,8 +27,7 @@ crypto_get_coinmetrics <- function(path = "coinmetrics", force_update = TRUE) {
 
 
   )
-  df <- dplyr::arrange(df,asset, date)
-  df <- dplyr::select(df,asset,date,PriceUSD,PriceBTC,Price_in_USD_or_index_value)
+  df <- dplyr::arrange(df,ticker,date)
 
 df
 }
