@@ -58,11 +58,8 @@ crypto_get_lending_rates <- function(path = "ftx", force_update = TRUE) {
     file.path(path, glue::glue('ftx_coin_lending_rates.feather'))
     )
 
-  #Rename column
-  df <- dplyr::rename(df,datetime = time)
-
   #Convert chr to datetime
-  df$datetime <- as.POSIXct(df$datetime,format="%Y-%m-%d %H:%M:%S",tz="UTC")
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%d %H:%M:%S",tz="UTC")
 
   df
 }
@@ -93,13 +90,8 @@ crypto_get_futures <- function(path = "ftx", force_update = TRUE) {
     file.path(path, glue::glue('ftx_futures_ohlc_1h.feather'))
   )
 
-  #Rename column
-  df <- dplyr::rename(df,datetime = startTime)
-
   #Convert chr to datetime
-  df$datetime <- as.POSIXct(df$datetime,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
-
-  df <- dplyr::select(df, ticker, datetime, open, high, low, close, volume)
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
 
   df
 }
@@ -130,14 +122,10 @@ crypto_get_index <- function(path = "ftx", force_update = TRUE) {
     file.path(path, glue::glue('ftx_index_ohlc_1h.feather'))
   )
 
-  #Rename column
-  df <- dplyr::rename(df,datetime = startTime)
 
   #Convert chr to datetime
-  df$datetime <- as.POSIXct(df$datetime,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
 
-  #Volume is NaN for index data
-  df <- dplyr::select(df, ticker, datetime, open, high, low, close)
 
   df
 }
@@ -168,11 +156,9 @@ crypto_get_perp_rates <- function(path = "ftx", force_update = TRUE) {
     file.path(path, glue::glue('ftx_perpetual_funding_rates.feather'))
   )
 
-  #Rename column
-  df <- dplyr::rename(df,datetime = time)
 
   #Convert chr to datetime
-  df$datetime <- as.POSIXct(df$datetime,format="%Y-%m-%d %H:%M:%S",tz="UTC")
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%d %H:%M:%S",tz="UTC")
 
 
   df
@@ -204,13 +190,108 @@ crypto_get_spot <- function(path = "ftx", force_update = TRUE) {
     file.path(path, glue::glue('ftx_spot_ohlc_1h.feather'))
   )
 
-  #Rename column
-  df <- dplyr::rename(df,datetime = startTime)
 
   #Convert chr to datetime
-  df$datetime <- as.POSIXct(df$datetime,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
-
-  df <- dplyr::select(df, ticker, datetime, open, high, low, close, volume)
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
 
   df
 }
+
+#' Load rebalance token data from FTX
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The rebalance trades dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_rebalance_trades()
+#' }
+crypto_get_rebalance_trades <- function(path = "ftx", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('ftx_token_rebalance_trades.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("ftx_token_rebalance_trades.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('ftx_token_rebalance_trades.feather'))
+  )
+
+
+  #Convert chr to datetime
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%d %H:%M:%S",tz="UTC")
+
+  df
+}
+
+
+#' Load Expired futures hourly data from FTX
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The expired futures dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_expired_futures()
+#' }
+crypto_get_expired_futures <- function(path = "ftx", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('ftx_expired_futures_1h_ohlc.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("ftx_expired_futures_1h_ohlc.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('ftx_expired_futures_1h_ohlc.feather'))
+  )
+
+  #Convert chr to datetime
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
+
+  df
+}
+
+
+#' Load One minnute perpetuals data from FTX
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The one minute perpetuals dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_minute_perpetuals()
+#' }
+crypto_get_minute_perpetuals <- function(path = "ftx", force_update = TRUE) {
+
+  if(!file.exists(file.path(path, glue::glue('ftx_perps_1m_ohlc.feather'))) || force_update == TRUE) {
+    print("Please Wait. This is a large dataset.")
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("ftx_perps_1m_ohlc.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('ftx_perps_1m_ohlc.feather'))
+  )
+
+  #Convert chr to datetime
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
+
+  df
+}
+
