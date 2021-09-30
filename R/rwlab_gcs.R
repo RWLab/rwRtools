@@ -37,8 +37,8 @@ get_pod_meta <- function(pod = NA) {
     Macro = list(
       bucket = "macro_research_pod",
       datasets = c("us_equity_bond_etfs.feather", "AssetsSeasonality.csv", "main_asset_classes_daily_ohlc.csv"),
-      essentials = c("us_equity_bond_etfs.feather"),
-      prices = c("us_equity_bond_etfs.feather")
+      essentials = c(" main_asset_classes_daily_ohlc.csv"),
+      prices = c(" main_asset_classes_daily_ohlc.csv")
     )
   )
 
