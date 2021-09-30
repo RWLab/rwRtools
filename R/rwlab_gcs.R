@@ -210,6 +210,11 @@ quicksetup <- function(pod, path = ".") {
 
       }
 
+      if(prices_file == "main_asset_classes_daily_ohlc.csv") {
+        prices <- rwRtools::macro_get_historical_asset_class(path=path, force_update = FALSE)
+
+      }
+
     }
 
     # Ensure date column is a date.
