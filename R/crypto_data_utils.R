@@ -197,6 +197,40 @@ crypto_get_spot <- function(path = "ftx", force_update = TRUE) {
   df
 }
 
+
+#' Load cleaned spot hourly data from FTX
+#' This dataset is cleaned from tokenzied stocks, leveraged tokens and FX pairs (only includes USDC denominated pairs)
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The spot dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_clean_spot()
+#' }
+crypto_get_clean_spot <- function(path = "ftx", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('ftx_clean_spot_ohlc_1h.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("ftx_clean_spot_ohlc_1h.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('ftx_clean_spot_ohlc_1h.feather'))
+  )
+
+
+  #Convert chr to datetime
+  df$date <- as.POSIXct(df$date,format="%Y-%m-%dT%H:%M:%S",tz="UTC")
+
+  df
+}
+
+
 #' Load rebalance token data from FTX
 #'
 #' @param path The path to save the dataset locally.
