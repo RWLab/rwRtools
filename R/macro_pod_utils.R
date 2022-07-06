@@ -111,7 +111,8 @@ macro_get_rates <- function(path = "macropod", force_update = TRUE) {
 
   local({
     load(file.path(path, glue::glue('tbills.RData')))
+    return(bills)
   })
 
-  bills
+
 }
