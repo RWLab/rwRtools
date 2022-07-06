@@ -87,3 +87,31 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
 
   df
 }
+
+#' Load daily rates data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The rates dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_rates()
+#' }
+macro_get_rates <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('tbills.RData'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("tbills.RData"),
+      path = path
+    )
+  }
+
+  df <- load(
+    file.path(path, glue::glue('tbills.RData'))
+  )
+
+  df
+}
