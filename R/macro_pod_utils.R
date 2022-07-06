@@ -101,18 +101,17 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
 #' df <- macro_get_rates()
 #' }
 macro_get_rates <- function(path = "macropod", force_update = TRUE) {
-  if(!file.exists(file.path(path, glue::glue('tbills.RData'))) || force_update == TRUE) {
+  if(!file.exists(file.path(path, glue::glue('tbill_rates.csv'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Macro",
-      object = glue::glue("tbills.RData"),
+      object = glue::glue("tbill_rates.csv"),
       path = path
     )
   }
 
-  local({
-    load(file.path(path, glue::glue('tbills.RData')))
-    return(bills)
-  })
+  df <- readr::read_csv(
+    file.path(path, glue::glue('tbill_rates.csv'))
+  )
 
-
+  df
 }
