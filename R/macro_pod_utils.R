@@ -45,16 +45,44 @@ df
 #' df <- macro_get_expiring_futures()
 #' }
 macro_get_expiring_futures <- function(path = "macropod", force_update = TRUE) {
-  if(!file.exists(file.path(path, glue::glue('futures_daily_ohlc.feather'))) || force_update == TRUE) {
+  if(!file.exists(file.path(path, glue::glue('futures_1d_ohlc.feather'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Macro",
-      object = glue::glue("futures_daily_ohlc.feather"),
+      object = glue::glue("futures_1d_ohlc.feather"),
       path = path
     )
   }
 
   df <- feather::read_feather(
-    file.path(path, glue::glue('futures_daily_ohlc.feather'))
+    file.path(path, glue::glue('futures_1d_ohlc.feather'))
+  )
+
+  df
+}
+
+#' Load RP expiring futures daily OHLC
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The futures dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_expiring_futures()
+#' }
+macro_get_expiring_futures <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('rp_futures_1d_ohlc.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("rp_futures_1d_ohlc.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('rp_futures_1d_ohlc.feather'))
   )
 
   df
