@@ -72,7 +72,7 @@ macro_get_expiring_futures <- function(path = "macropod", force_update = TRUE) {
 #' \dontrun{
 #' df <- macro_get_expiring_futures()
 #' }
-macro_get_expiring_futures <- function(path = "macropod", force_update = TRUE) {
+macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE) {
   if(!file.exists(file.path(path, glue::glue('rp_futures_1d_ohlc.feather'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Macro",
