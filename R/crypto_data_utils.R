@@ -339,7 +339,7 @@ crypto_get_minute_perpetuals <- function(path = "ftx", force_update = TRUE) {
 #'
 #' @examples
 #' \dontrun{
-#' df <- crypto_get_minute_perpetuals()
+#' df <- crypto_get_top_of_book_sample()
 #' }
 crypto_get_top_of_book_sample <- function(path = "ftx", force_update = TRUE) {
 
@@ -354,6 +354,36 @@ crypto_get_top_of_book_sample <- function(path = "ftx", force_update = TRUE) {
 
   df <- feather::read_feather(
     file.path(path, glue::glue('ftx_btc_perp_bbo_sample.feather'))
+  )
+
+  df
+}
+
+#' Load trades sample for BTC-PERP from FTX
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The trades snapshot dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_trades_sample()
+#' }
+crypto_get_trades_sample <- function(path = "ftx", force_update = TRUE) {
+
+  if(!file.exists(file.path(path, glue::glue('ftx_btc_perp_trades_sample.feather'))) || force_update == TRUE) {
+    print("Please Wait. This is a large dataset.")
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("ftx_btc_perp_trades_sample.feather"),
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, glue::glue('ftx_btc_perp_trades_sample.feather'))
   )
 
   df

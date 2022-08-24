@@ -30,7 +30,7 @@ get_pod_meta <- function(pod = NA) {
     ),
     Crypto = list (
       bucket = "crypto_research_pod",
-      datasets = c("coinmetrics.csv","ftx_spot_ohlc_1h.feather","ftx_clean_spot_ohlc_1h.feather","ftx_perpetual_funding_rates.feather","ftx_index_ohlc_1h.feather","ftx_futures_ohlc_1h.feather","ftx_coin_lending_rates.feather", "ftx_btc_perp_bbo_sample.feather"),
+      datasets = c("coinmetrics.csv","ftx_spot_ohlc_1h.feather","ftx_clean_spot_ohlc_1h.feather","ftx_perpetual_funding_rates.feather","ftx_index_ohlc_1h.feather","ftx_futures_ohlc_1h.feather","ftx_coin_lending_rates.feather", "ftx_btc_perp_bbo_sample.feather", "ftx_btc_perp_trades_sample.feather"),
       essentials = c("coinmetrics.csv"),
       prices = c("coinmetrics.csv")
     ),

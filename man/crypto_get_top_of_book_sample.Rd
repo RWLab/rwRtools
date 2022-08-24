@@ -19,6 +19,6 @@ Load top-of-book sample for BTC-PERP from FTX
 }
 \examples{
 \dontrun{
-df <- crypto_get_minute_perpetuals()
+df <- crypto_get_top_of_book_sample()
 }
 }
