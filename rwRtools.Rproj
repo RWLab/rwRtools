@@ -20,3 +20,7 @@ BuildType: Package
 PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageRoxygenize: rd,collate,namespace
+
+PythonType: conda
+PythonVersion: 3.10.6
+PythonPath: C:/ProgramData/Anaconda3/envs/equaliser/python.exe

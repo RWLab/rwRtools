@@ -27,7 +27,7 @@ macro_get_historical_asset_class <- function(path = "macropod", force_update = T
 
 
   )
-  df <- dplyr::arrange(df,ticker,date)
+  df <- dplyr::arrange(df, date, ticker)
 
 df
 }
