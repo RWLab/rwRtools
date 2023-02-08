@@ -88,6 +88,35 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
   df
 }
 
+#' Load expiring VX futures daily OHLC plus metadata
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The VX futures dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_expiring_vx_futures()
+#' }
+macro_get_expiring_vx_futures <- function(path = "macropod", force_update = TRUE) {
+  obj <- "macro_get_expiring_vx_futures.feather"
+  if(!file.exists(file.path(path, obj)) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = obj,
+      path = path
+    )
+  }
+
+  df <- feather::read_feather(
+    file.path(path, obj)
+  )
+
+  df
+}
+
 #' Load daily rates data
 #'
 #' @param path The path to save the dataset locally.
