@@ -101,7 +101,7 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
 #' df <- macro_get_expiring_vx_futures()
 #' }
 macro_get_expiring_vx_futures <- function(path = "macropod", force_update = TRUE) {
-  obj <- "macro_get_expiring_vx_futures.feather"
+  obj <- "vx_futures_1d_ohlc.feather"
   if(!file.exists(file.path(path, obj)) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Macro",
