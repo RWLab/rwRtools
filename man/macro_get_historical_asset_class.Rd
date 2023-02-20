@@ -7,7 +7,7 @@
 macro_get_historical_asset_class(path = "macropod", force_update = TRUE)
 }
 \arguments{
-\item{path}{The path to save the Coinmetrics dataset locally.}
+\item{path}{The path to save the dataset locally.}
 
 \item{force_update}{Force download and overwrite exsiting files}
 }

@@ -2,7 +2,7 @@
 
 #' Load main asset classes daily  data
 #'
-#' @param path The path to save the Coinmetrics dataset locally.
+#' @param path The path to save the dataset locally.
 #' @param force_update Force download and overwrite exsiting files
 #'
 #' @return Historical daily data of some of the main asset classes as a tibble.
@@ -141,6 +141,37 @@ macro_get_rates <- function(path = "macropod", force_update = TRUE) {
   df <- readr::read_csv(
     file.path(path, glue::glue('tbill_rates.csv'))
   )
+
+  df
+}
+
+#' Load VIX and VIX3M index daily  data
+#'
+#' @param path The path to save the vix/vix3m dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return Historical daily index data of VIX and VIX3M as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_vix_vix3m()
+#' }
+macro_get_vix_vix3m <- function(path = "macropod", force_update = TRUE) {
+  filename <- 'vix_vix3m.csv'
+  if(!file.exists(file.path(path, filename)) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = filename,
+      path = path
+    )
+  }
+
+  df <- readr::read_csv(
+    file.path(path, filename),
+    guess_max = 500000
+  )
+  df <- dplyr::arrange(df, date, ticker)
 
   df
 }

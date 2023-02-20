@@ -4,7 +4,7 @@
 \alias{rwlab_data_auth}
 \title{Interactively authorise a Google Identity and load Oauth2 token}
 \usage{
-rwlab_data_auth(oauth_email = NA, oauth_cache = FALSE)
+rwlab_data_auth(json = json_string, token = NULL, email = NULL)
 }
 \arguments{
 \item{oauth_email}{string, The email address you use to access The Lab. If NA (default), select interactively.}
