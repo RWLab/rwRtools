@@ -1,3 +1,0 @@
-myfun <- function() {
-  "worked"
-}
