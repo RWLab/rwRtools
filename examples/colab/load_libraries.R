@@ -1,6 +1,6 @@
 # Load libraries
 
-"""
+"
 This function is intended to be sourced directly from a github raw URL as an efficient way
 to install required packages without having to load any package or wrangle large
 code snippets.
@@ -45,7 +45,11 @@ debug <- load_libraries()
 cat(debug)
 
 If you get stuck, ask on Slack!
-"""
+
+Note for devs:
+GitHub caches raw content for 5 minutes, so any changes will take 5 minutes to
+show up in GitHub.
+"
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
   # install pacman the old fashioned way - isn't listed as an ubuntu package
