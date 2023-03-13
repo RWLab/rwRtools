@@ -75,7 +75,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     "ellipsis", "digest", "gtable", "isoband", "MASS", "mgcv", "scales", "withr",
     "stringi", "iterators", "R.methodsS3", "openssl", "foreach", "xts",
     "R.oo", "RcppArmadillo", "slam", "timeDate", "cccp", "Rglpk", "timeSeries",
-    "tibble", "tidyr", "here", "roll", "Rcpp"
+    "tibble", "tidyr", "here", "roll", "Rcpp", "RcppParallel"
   )
 
   # pre-installed libraries
