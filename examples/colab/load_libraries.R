@@ -123,6 +123,6 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   })
 
   # output messages from install - optional, for debugging
-  return(invisiable(msg2))
+  return(invisible(msg2))
 
 }
