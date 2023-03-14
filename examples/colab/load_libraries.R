@@ -65,7 +65,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
 
   # libraries to load (install and load)
   libs_to_load <- c(
-    c("tidyverse", "glue"),
+    c("tidyverse", "lubridate"),
     extra_libraries
   )
 

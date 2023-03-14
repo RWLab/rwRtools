@@ -18,7 +18,7 @@ get_pod_meta <- function(pod = NA) {
   pod_meta <- list(
     EquityFactors = list(
       bucket = "equity_factors_research_pod",
-      datasets = c("R1000_ohlc_1d.feather", "R1000_metadata.feather", "R1000_fundamentals_1d.feather", "R1000_funamentals_snapshot.feather", "streaks_factor_dataset.feather", "extended_streak_factors.feather"),
+      datasets = c("R1000_ohlc_1d.feather", "R1000_metadata.feather", "R1000_fundamentals_1d.feather", "R1000_fundamentals_snapshot.feather", "streaks_factor_dataset.feather", "extended_streak_factors.feather"),
       essentials = c("R1000_ohlc_1d.feather"),
       prices = c("R1000_ohlc_1d.feather")
       ),
