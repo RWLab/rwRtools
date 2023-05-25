@@ -59,7 +59,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   rwRtools_dependencies <- c(
     "pillar", "tibble", "rlang", "httr", "iterators", "zoo", "R.methodsS3",
     "callr", "foreach", "xts", "stringi", "Rcpp", "R.oo", "gargle",
-    "googleAuthR", "glue", "googleCloudStorageR", "R.utils", "feather",
+    "googleAuthR", "glue", "googleCloudStorageR", "R.utils", "feather", "arrow",
     "lubridate", "readr", "stringr", "dplyr", "purrr", "magrittr", "TTR", "doParallel"
   )
 

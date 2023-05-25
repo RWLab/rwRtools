@@ -110,7 +110,7 @@ macro_get_expiring_vx_futures <- function(path = "macropod", force_update = TRUE
     )
   }
 
-  df <- feather::read_feather(
+  df <- arrow::read_feather(
     file.path(path, obj)
   )
 
