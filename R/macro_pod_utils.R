@@ -112,7 +112,11 @@ macro_get_expiring_vx_futures <- function(path = "macropod", force_update = TRUE
 
   df <- arrow::read_feather(
     file.path(path, obj)
-  )
+  ) %>%
+    mutate(
+      date = lubridate::as_date(date),
+      expiry = lubridate::as_date(expiry)
+    )
 
   df
 }
