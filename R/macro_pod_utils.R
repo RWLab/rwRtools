@@ -226,16 +226,16 @@ macro_get_vix_vix3m <- function(path = "macropod", force_update = TRUE) {
 #' df <- macro_get_historical_short_sale()
 #' }
 macro_get_historical_short_sale <- function(year = 2023, path = "macropod", force_update = TRUE) {
-  if(!file.exists(file.path(path, glue::glue('ib_shortstock_{year}.csv'))) || force_update == TRUE) {
+  if(!file.exists(file.path(path, glue::glue('ib_shortstock_{year}.csv.gzip'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Macro",
-      object = glue::glue("ib_shortstock_{year}.csv"),
+      object = glue::glue("ib_shortstock_{year}.csv.gzip"),
       path = path
     )
   }
 
   df <- readr::read_csv(
-    file.path(path, glue::glue('ib_shortstock_{year}.csv')),
+    file.path(path, glue::glue('ib_shortstock_{year}.csv.gzip')),
     guess_max = 500000
 
 
