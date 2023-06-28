@@ -149,6 +149,38 @@ macro_get_rates <- function(path = "macropod", force_update = TRUE) {
   df
 }
 
+
+#' Load government bond returns dataset
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite existing files
+#'
+#' @return The govt bonds returns dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_govt_bond_returns()
+#' }
+macro_get_govt_bond_returns <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('bond_returns.csv'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("bond_returns.csv"),
+      path = path
+    )
+  }
+
+  df <- readr::read_csv(
+    file.path(path, glue::glue('bond_returns.csv'))
+  )
+
+  df
+}
+
+
+
+
 #' Load VIX and VIX3M index daily  data
 #'
 #' @param path The path to save the vix/vix3m dataset locally.
