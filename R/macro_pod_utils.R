@@ -241,7 +241,8 @@ macro_get_historical_short_sale <- function(year = 2023, path = "macropod", forc
 
   )
   df <- dplyr::arrange(df, date, ticker) %>%
-    mutate(date = lubridate::as_date(date))
+    mutate(date = lubridate::as_date(date)) %>%
+    mutate(available = as.numeric(stringr::str_remove(available, ">")))
 
   df
 }
