@@ -52,8 +52,13 @@ show up in GitHub.
 "
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
-  options(Ncpus = 2)
+  # set options to favour binaries from Posit Package Manager
+  options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
+  options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
+  options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
+  options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
+
   # install pacman the old fashioned way - isn't listed as an ubuntu package
   install.packages('pacman')
 
@@ -80,11 +85,8 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     "tibble", "tidyr", "here", "roll", "Rcpp", "RcppParallel"
   )
 
-  # install from cran - not available on apt
-  install_from_cran <- c("cccp", "roll", "googleAuthR", "googleCloudStorageR", "feather", "arrow")
-
-  # libraries to install from CRAN
-  install_from_apt <- unique(c(
+  # libraries to install
+  to_install <- unique(c(
     libs_to_load,
     other_dependencies,
     rwRtools_dependencies,
@@ -95,32 +97,10 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   installed <- installed.packages()[, "Package"]
 
   # remove from apt list any packages that are already installed
-  install_from_apt <- install_from_apt[!install_from_apt %in% installed]
+  to_install <- to_install[!to_install %in% installed]
 
-  # remove from apt list any packages that will be installed from cran
-  install_from_apt <- install_from_apt[!install_from_apt %in% install_from_cran]
-
-  # convert to lowercase all letters other than an "R" at the start followed by "."
-  # capitalisation of call to CRAN may not always match capitalisation of
-  # package name (eg library(doParallel) vs sudo apt install r-cran-doparallel)
-  install_from_apt <- gsub("^(?!R\\.)([\\w]+)", "\\L\\1", install_from_apt, perl = TRUE)
-
-  msg1 <- system2('sudo', args = c('apt-get', 'update'),
-                  stdout = TRUE,
-                  stderr = TRUE,
-                  wait = TRUE
-  )
-
-  msg2 <- system2(
-    'sudo',
-    args = c('apt', 'install', sub('', 'r-cran-', install_from_apt, '-y --fix-missing')),
-    stdout = TRUE,
-    stderr = TRUE,
-    wait = TRUE
-  )
-
-  install_from_cran <- install_from_cran[!install_from_cran %in% installed]
-  install.packages(install_from_cran, dependencies = FALSE)
+  # install
+  install.packages(to_install, dependencies = FALSE)
 
   tryCatch({
     pacman::p_load(char = libs_to_load, install = FALSE)
@@ -134,8 +114,4 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   }, error = function(e) {
     print(e)
   })
-
-  # output messages from install - optional, for debugging
-  return(invisible(msg2))
-
 }
