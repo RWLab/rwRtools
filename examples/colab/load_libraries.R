@@ -78,22 +78,30 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     "tibble", "tidyr", "here", "roll", "Rcpp", "RcppParallel"
   )
 
-  # pre-installed libraries
-  installed <- installed.packages()[, "Package"]
+  # install from cran - not available on apt
+  install_from_cran <- c("cccp", "roll", "googleAuthR", "googleCloudStorageR", "feather", "arrow")
 
   # libraries to install from CRAN
-  install_from_cran <- unique(c(
+  install_from_apt <- unique(c(
     libs_to_load,
     other_dependencies,
     rwRtools_dependencies,
     extra_dependencies
   ))
-  install_from_cran <- install_from_cran[!install_from_cran %in% installed]
+
+  # pre-installed libraries
+  installed <- installed.packages()[, "Package"]
+
+  # remove from apt list any packages that are already installed
+  install_from_apt <- install_from_apt[!install_from_apt %in% installed]
+
+  # remove from apt list any packages that will be installed from cran
+  install_from_apt <- install_from_apt[!install_from_apt %in% install_from_cran]
 
   # convert to lowercase all letters other than an "R" at the start followed by "."
   # capitalisation of call to CRAN may not always match capitalisation of
   # package name (eg library(doParallel) vs sudo apt install r-cran-doparallel)
-  install_from_cran <- gsub("^(?!R\\.)([\\w]+)", "\\L\\1", install_from_cran, perl = TRUE)
+  install_from_apt <- gsub("^(?!R\\.)([\\w]+)", "\\L\\1", install_from_apt, perl = TRUE)
 
   msg1 <- system2('sudo', args = c('apt-get', 'update'),
                   stdout = TRUE,
@@ -103,11 +111,14 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
 
   msg2 <- system2(
     'sudo',
-    args = c('apt', 'install', sub('', 'r-cran-', install_from_cran, '-y --fix-missing')),
+    args = c('apt', 'install', sub('', 'r-cran-', install_from_apt, '-y --fix-missing')),
     stdout = TRUE,
     stderr = TRUE,
     wait = TRUE
   )
+
+  install_from_cran <- install_from_cran[!install_from_cran %in% installed]
+  install.packages(install_from_cran, dependencies = FALSE)
 
   tryCatch({
     pacman::p_load(char = libs_to_load, install = FALSE)
