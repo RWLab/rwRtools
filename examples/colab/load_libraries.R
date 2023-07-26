@@ -10,8 +10,9 @@ This is an efficient way to:
 are dependencies, excluding pre- installed libraries)
 -load the ones you want to use in your session
 
-This snippet works by installing as many packages and dependencies using `apt-get`
-as possible, which is much faster than using install.packages()
+This snippet works by installing as many packages and dependencies using binaries
+from Posit's package manager as possible, which is much faster than compiling
+from source.
 
 If not loading rsims, this should take around 35 seconds. If loading rsims, it
 should take around 45s.
@@ -37,18 +38,13 @@ be automatically installed, just a little slower than if you specified them.
 
 Also don't worry about duplicating package installs. This is handled by the function.
 
-IF SOMETHING GOES WRONG:
-Debug the install process by inspecting the msg2 object, which holds the output
-of the apt install process. This object is returned invisibly by the function,
-so you would do:
-debug <- load_libraries()
-cat(debug)
-
 If you get stuck, ask on Slack!
 
 Note for devs:
 GitHub caches raw content for 5 minutes, so any changes will take 5 minutes to
 show up in GitHub.
+
+TODO: make a debug message with status and return it
 "
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
