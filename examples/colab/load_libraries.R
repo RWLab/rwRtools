@@ -53,6 +53,7 @@ show up in GitHub.
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
   options(Ncpus = 2)
+  cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
   # install pacman the old fashioned way - isn't listed as an ubuntu package
   install.packages('pacman')
 
