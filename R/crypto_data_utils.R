@@ -54,8 +54,36 @@ crypto_get_coincodex <- function(path = "coincodex", force_update = TRUE) {
   }
 
   df <- arrow::read_feather(glue::glue("{path}/coincodex_marketcap.feather")) %>%
-    mutate(Date = lubridate::as_date(Date))
+    mutate(Date = lubridate::as_date(Date)) %>%
+    arrange(Date, Ticker)
 
+  df
+}
+
+#' Load Binance Spot 1h OHLCV data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The binance 1h spot OHLCV dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_binance_spot_1h()
+#' }
+crypto_get_binance_spot_1h <- function(path = "binance", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('binance_spot_1h.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("binance_spot_1h.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/binance_spot_1h.feather")) %>%
+    mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
+    arrange(Datetime, Ticker)
 
   df
 }
