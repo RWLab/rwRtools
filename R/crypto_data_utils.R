@@ -32,6 +32,34 @@ crypto_get_coinmetrics <- function(path = "coinmetrics", force_update = TRUE) {
 df
 }
 
+#' Load coincodex daily crypto data
+#'
+#' @param path The path to save the coincodex dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The coincodex dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_coincodex()
+#' }
+crypto_get_coincodex <- function(path = "coincodex", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('coincodex_marketcap.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("coincodex_marketcap.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/coincodex_marketcap.feather")) %>%
+    mutate(Date = lubridate::as_date(Date))
+
+
+  df
+}
+
 
 #' Load Coin lending rates hourly data from FTX
 #'

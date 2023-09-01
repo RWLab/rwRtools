@@ -2,6 +2,7 @@
 
 export("%>%")
 export(crypto_get_clean_spot)
+export(crypto_get_coincodex)
 export(crypto_get_coinmetrics)
 export(crypto_get_expired_futures)
 export(crypto_get_futures)
