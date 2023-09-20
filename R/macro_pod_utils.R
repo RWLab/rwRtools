@@ -246,3 +246,31 @@ macro_get_historical_short_sale <- function(year = 2023, path = "macropod", forc
 
   df
 }
+
+#' Load earnings data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The earnings dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_earnings()
+#' }
+macro_get_earnings <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('earnings.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("earnings.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/earnings.feather")) %>%
+    mutate(date = lubridate::as_date(date)) %>%
+    arrange(date, symbol)
+
+  df
+}
