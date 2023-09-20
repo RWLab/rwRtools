@@ -270,7 +270,8 @@ macro_get_earnings <- function(path = "macropod", force_update = TRUE) {
 
   df <- arrow::read_feather(glue::glue("{path}/earnings.feather")) %>%
     mutate(date = lubridate::as_date(date)) %>%
-    arrange(date, symbol)
+    arrange(date, symbol) %>%
+    select(date, symbol, quarter, year, hour, epsEstimate, epsActual, revenueEstimate, revenueActual)
 
   df
 }
