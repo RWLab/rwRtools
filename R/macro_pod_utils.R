@@ -298,7 +298,11 @@ macro_get_straddles_over_earnings <- function(path = "macropod", force_update = 
   }
 
   df <- arrow::read_feather(glue::glue("{path}/earnings_straddles.feather")) %>%
-    mutate(date = lubridate::as_date(date)) %>%
+    mutate(
+      earningsDate = lubridate::as_date(earningsDate),
+      tradeDate = lubridate::as_date(tradeDate),
+      expirDate = lubridate::as_date(expirDate)
+    ) %>%
     arrange(ticker, earningsDate, tradeDate)
 
   df
