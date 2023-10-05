@@ -275,3 +275,31 @@ macro_get_earnings <- function(path = "macropod", force_update = TRUE) {
 
   df
 }
+
+#' Load straddles over earnings data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The straddles over earnings dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_straddles_over_earnings()
+#' }
+macro_get_straddles_over_earnings <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('earnings.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("earnings_straddles.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/earnings_straddles.feather")) %>%
+    mutate(date = lubridate::as_date(date)) %>%
+    arrange(ticker, earningsDate, tradeDate)
+
+  df
+}
