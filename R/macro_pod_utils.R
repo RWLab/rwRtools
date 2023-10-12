@@ -88,10 +88,7 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
   df <- arrow::read_feather(
     file.path(path, glue::glue('rp_futures_1d_ohlc.feather'))
   )%>%
-    mutate(
-      date = lubridate::as_date(date),
-      expiry = lubridate::as_date(expiry)
-    )
+    mutate(date = lubridate::as_date(date))
 
   df
 }
