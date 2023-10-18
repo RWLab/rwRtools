@@ -310,7 +310,7 @@ macro_get_straddles_over_earnings <- function(path = "macropod", force_update = 
     ) %>%
     arrange(ticker, earningsDate, tradeDate)
 
-  cols_to_include <- names(select(df, -extCallValue, -extPutValue))
+  cols_to_include <- names(select(df, -extCallValue, -extPutValue, -extSmvVol))
   df <- df %>%
     distinct(!!!rlang::syms(cols_to_include), .keep_all = TRUE)
 
