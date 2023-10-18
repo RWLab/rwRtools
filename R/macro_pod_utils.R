@@ -308,7 +308,8 @@ macro_get_straddles_over_earnings <- function(path = "macropod", force_update = 
       tradeDate = lubridate::as_date(tradeDate),
       expirDate = lubridate::as_date(expirDate)
     ) %>%
-    arrange(ticker, earningsDate, tradeDate)
+    arrange(ticker, earningsDate, tradeDate) %>%
+    distinct()
 
   df
 }
