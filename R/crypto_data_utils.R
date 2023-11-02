@@ -60,6 +60,34 @@ crypto_get_coincodex <- function(path = "coincodex", force_update = TRUE) {
   df
 }
 
+#' Load Binance Spot 1d OHLCV data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The binance 1d spot OHLCV dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_binance_spot_1d()
+#' }
+crypto_get_binance_spot_1d <- function(path = "binance", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('binance_spot_production_1d_ohlc.csv'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("binance_spot_production_1d_ohlc.csv"),
+      path = path
+    )
+  }
+
+  df <- readr::read_csv(glue::glue("{path}/binance_spot_production_1d_ohlc.csv")) %>%
+    mutate(date = lubridate::as_datetime(date)) %>%
+    arrange(date, ticker)
+
+  df
+}
+
 #' Load Binance Spot 1h OHLCV data
 #'
 #' @param path The path to save the dataset locally.

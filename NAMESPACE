@@ -3,6 +3,7 @@
 export("%>%")
 export(crypto_get_binance_perps_1h)
 export(crypto_get_binance_perps_funding)
+export(crypto_get_binance_spot_1d)
 export(crypto_get_binance_spot_1h)
 export(crypto_get_clean_spot)
 export(crypto_get_coincodex)
