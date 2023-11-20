@@ -51,11 +51,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   # set options to favour binaries from Posit Package Manager
   options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
   options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
-  # freeze packages at start of August
-  # installing the latest version of arrow (v14.0) takes about 6 minutes. Installing this one (v13.0) takes seconds.
-  # likely to be able to revert this at some point
-  # options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
-  options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/2023-08-04"))
+  options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
 
@@ -99,8 +95,12 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   # remove from apt list any packages that are already installed
   to_install <- to_install[!to_install %in% installed]
 
+  # remove arrow and install v13 instead (latest takes forever)
+  to_install <- to_install[to_install != "arrow"]
+
   # install
   install.packages(to_install, dependencies = FALSE)
+  devtools::install_version('arrow', '13.0.0.1')
 
   tryCatch({
     pacman::p_load(char = libs_to_load, install = FALSE)
