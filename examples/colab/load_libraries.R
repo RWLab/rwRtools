@@ -103,14 +103,15 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   devtools::install_version('arrow', '13.0.0.1')
 
   tryCatch({
-    pacman::p_load(char = libs_to_load, install = FALSE)
+    # set to TRUE will catch any missed dependencies
+    pacman::p_load(char = libs_to_load, install = TRUE)
 
     # install and load rwRtools from GH (sans dependencies)
-    pacman::p_load_current_gh("RWLab/rwRtools", dependencies = FALSE)
+    pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
 
     # install and load rsims from GH (sans dependencies)
     if(load_rsims == TRUE)
-      pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = FALSE)
+      pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
   }, error = function(e) {
     print(e)
   })
