@@ -316,3 +316,34 @@ macro_get_straddles_over_earnings <- function(path = "macropod", force_update = 
 
   df
 }
+
+#' Load stock closing price momentum data - prices snapshotted 10-15 minutes
+#' before the close, and the close.
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The US stock closing price momentum dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_close_price_momo()
+#' }
+macro_get_close_price_momo <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('close_momentum.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("close_momentum.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/close_momentum.feather")) %>%
+    mutate(
+      date = lubridate::as_date(earningsDate)
+    ) %>%
+    arrange(date, ticker)
+
+  df
+}
