@@ -341,7 +341,7 @@ macro_get_close_price_momo <- function(path = "macropod", force_update = TRUE) {
 
   df <- arrow::read_feather(glue::glue("{path}/close_momentum.feather")) %>%
     mutate(
-      date = lubridate::as_date(earningsDate)
+      date = lubridate::as_date(date)
     ) %>%
     arrange(date, ticker)
 
