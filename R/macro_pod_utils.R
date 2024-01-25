@@ -347,3 +347,30 @@ macro_get_close_price_momo <- function(path = "macropod", force_update = TRUE) {
 
   df
 }
+
+#' Load NYSE holidays
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return NYSE holidays from 1990 through 2040.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- macro_get_nyse_holidays()
+#' }
+macro_get_nyse_holidays <- function(path = "macropod", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('nyse_holidays.csv'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Macro",
+      object = glue::glue("nyse_holidays.csv"),
+      path = path
+    )
+  }
+
+  df <- readr::read_csv(file.path(path, glue::glue('nyse_holidays.csv')))
+  df <- dplyr::arrange(df, Date)
+
+  df
+}

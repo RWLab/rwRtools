@@ -1,6 +1,6 @@
 Package: rwRtools
 Title: R Tools For Working In The Lab
-Version: 0.1.66
+Version: 0.1.67
 Authors@R: 
     person(given = "Kris", family = "Longmore", role = c("aut", "cre"), email = "kris@robotwealth.com")
 Description: The Lab is Robot Wealth's hub for community-driven research and collaboration. rwRtools makes it easy to access The Lab's datasets and get started with quantitative research.

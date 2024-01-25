@@ -191,7 +191,7 @@ fx_convert_common_quote_currency <- function(prices_df, quote_currency = "USD") 
 #'
 #' @examples
 #' \dontrun{
-#' fx_get_policy_rates(c("AUD", "NZD", "GBP"))
+#' fx_get_policy_rates(c("AUD","BRL","CAD","CHF","CHN","DDK","EUR","GBP","HKD","JPY","MXN","NOK","NZD","PLN","RUB","SEK","SGD","TRY","USD","ZAR"))
 #' }
 fx_get_policy_rates <- function(currencies, path = "Policy-Rates", force_update = TRUE) {
   l <- purrr::map(currencies, function(currency) {

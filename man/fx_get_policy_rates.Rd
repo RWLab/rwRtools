@@ -21,6 +21,6 @@ Load historical central bank policy rates
 }
 \examples{
 \dontrun{
-fx_get_policy_rates(c("AUD", "NZD", "GBP"))
+fx_get_policy_rates(c("AUD","BRL","CAD","CHF","CHN","DDK","EUR","GBP","HKD","JPY","MXN","NOK","NZD","PLN","RUB","SEK","SGD","TRY","USD","ZAR"))
 }
 }
