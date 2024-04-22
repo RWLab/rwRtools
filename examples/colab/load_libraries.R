@@ -46,6 +46,8 @@ show up in GitHub.
 
 TODO: make a debug message with status and return it
 "
+# load tidyverse first - ensures necessary packages aren't overwritten
+library(tidyverse)
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
   # set options to favour binaries from Posit Package Manager
@@ -54,9 +56,6 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
-
-  # load tidyverse first - ensures necessary packages aren't overwritten
-  library(tidyverse)
 
   # install pacman the old fashioned way - isn't listed as an ubuntu package
   install.packages('pacman')
