@@ -97,11 +97,11 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   to_install <- to_install[!to_install %in% installed]
 
   # remove arrow and install v13 instead (latest takes forever)
-  # to_install <- to_install[to_install != "arrow"]
+  to_install <- to_install[to_install != "arrow"]
 
   # install
   install.packages(to_install, dependencies = FALSE)
-  # devtools::install_version('arrow', '13.0.0.1')
+  devtools::install_version('arrow', '13.0.0.1')
 
   tryCatch({
     # set to TRUE will catch any missed dependencies
