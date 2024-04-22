@@ -54,6 +54,10 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
 
+  install.packages(c("broom", "conflicted", "dbplyr", "dplyr", "dtplyr", "forcats", "ggplot2", "googledrive", "googlesheets4", "haven", "hms", "httr",
+"jsonlite", "lubridate", "magrittr", "modelr", "pillar", "purrr",
+"ragg", "readr", "readxl", "reprex", "rlang", "rvest", "stringr",
+"tibble", "tidyr", "xml2"))
   tidyverse::tidyverse_update()
 
   # install pacman the old fashioned way - isn't listed as an ubuntu package
