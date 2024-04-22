@@ -54,6 +54,8 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
 
+  install.packages("tidyverse")
+
   # install pacman the old fashioned way - isn't listed as an ubuntu package
   install.packages('pacman')
 
