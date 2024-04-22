@@ -55,6 +55,9 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
 
+  # load tidyverse first - ensures necessary packages aren't overwritten
+  library(tidyverse)
+
   # install pacman the old fashioned way - isn't listed as an ubuntu package
   install.packages('pacman')
 
@@ -106,7 +109,6 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     # set to TRUE will catch any missed dependencies
     # remove tidyverse from libs to load and load separately with library
     pacman::p_load(char = libs_to_load[libs_to_load != "tidyverse"], install = TRUE)
-    library(tidyverse)
 
     # install and load rwRtools from GH (sans dependencies)
     pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
