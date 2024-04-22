@@ -111,11 +111,11 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     pacman::p_load(char = libs_to_load[libs_to_load != "tidyverse"], install = TRUE)
 
     # install and load rwRtools from GH (sans dependencies)
-    pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
+    pacman::p_load_current_gh("RWLab/rwRtools", dependencies = FALSE)
 
     # install and load rsims from GH (sans dependencies)
     if(load_rsims == TRUE)
-      pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
+      pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = FALSE)
   }, error = function(e) {
     print(e)
   })
