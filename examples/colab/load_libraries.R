@@ -47,8 +47,6 @@ show up in GitHub.
 TODO: make a debug message with status and return it
 "
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
-  # load tidyverse first - ensures necessary packages aren't overwritten
-  require(tidyverse)
   # set options to favour binaries from Posit Package Manager
   options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
   options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
@@ -106,6 +104,8 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   tryCatch({
     # set to TRUE will catch any missed dependencies
     # remove tidyverse from libs to load and load separately with library
+    # load tidyverse first - ensures necessary packages aren't overwritten
+    require(tidyverse)
     pacman::p_load(char = libs_to_load[libs_to_load != "tidyverse"], install = TRUE)
 
     # install and load rwRtools from GH (sans dependencies)
