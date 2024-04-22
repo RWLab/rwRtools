@@ -46,10 +46,9 @@ show up in GitHub.
 
 TODO: make a debug message with status and return it
 "
-# load tidyverse first - ensures necessary packages aren't overwritten
-library(tidyverse)
-
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
+  # load tidyverse first - ensures necessary packages aren't overwritten
+  require(tidyverse)
   # set options to favour binaries from Posit Package Manager
   options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
   options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
