@@ -93,74 +93,101 @@ retry_download <- function(package, version = NULL, max_retries = 3) {
 
 
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
-  # set options to favour binaries from Posit Package Manager
-  options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
-  options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
-  options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
+  # temporary solution while Posit Package Manager is down
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
-  options(warn = -1)
-  cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
-
-  # install pacman the old fashioned way - isn't listed as an ubuntu package
+  # install pacman the old fashioned way - isn't listed as an ubuntu package, not available on Posit package manager
   install.packages('pacman')
 
-  # rwRtools dependencies (install but don't load)
-  rwRtools_dependencies <- c(
-    "pillar", "tibble", "rlang", "httr", "iterators", "zoo", "R.methodsS3",
-    "callr", "foreach", "xts", "stringi", "Rcpp", "R.oo", "gargle", "assertthat",
-    "googleAuthR", "glue", "googleCloudStorageR", "R.utils", "feather", "arrow",
-    "lubridate", "readr", "stringr", "dplyr", "purrr", "magrittr", "TTR", "doParallel"
-  )
+  # install stuff that isn't already present
+  to_install <- c('iterators', 'zoo', 'R.methodsS3', 'assertthat', 'foreach', 'xts', 'Rcpp', 'R.oo', 'googleAuthR', 'doParallel', 'TTR', 'arrow', 'feather', 'R.utils', 'googleCloudStorageR')
+  lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE)
 
-  # libraries to load (install and load)
-  libs_to_load <- c(
-    c("tidyverse", "lubridate"),
-    extra_libraries
-  )
+  # install and load rwRtools from GH (sans dependencies)
+  pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
 
-  # dependencies (install but don't load)
-  other_dependencies <- c(
-    "generics", "lifecycle", "R6", "rlang", "tidyselect", "vctrs", "pillar",
-    "ellipsis", "digest", "gtable", "isoband", "MASS", "mgcv", "scales", "withr",
-    "stringi", "iterators", "R.methodsS3", "openssl", "foreach", "xts",
-    "R.oo", "RcppArmadillo", "slam", "timeDate", "cccp", "Rglpk", "timeSeries",
-    "tibble", "tidyr", "here", "roll", "Rcpp", "RcppParallel"
-  )
+  if(length(extra_libraries > 0))
+    lapply(extra_libraries, pacman::p_load, character.only = TRUE, dependencies = TRUE, try.bioconductor = FALSE)
 
-  # libraries to install
-  to_install <- unique(c(
-    libs_to_load,
-    other_dependencies,
-    rwRtools_dependencies,
-    extra_dependencies
-  ))
+  if(load_rsims == TRUE)
+    pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
 
-  # pre-installed libraries
-  installed <- installed.packages()[, "Package"]
+  require(tidyverse)
 
-  # remove from apt list any packages that are already installed
-  to_install <- to_install[!to_install %in% installed]
-
-  # remove arrow and install v13 instead (latest takes forever)
-  to_install <- to_install[to_install != "arrow"]
-
-  # install
-  retry_download("arrow", "13.0.0.1")
-  lapply(to_install, retry_download)
-  # install.packages(to_install, dependencies = TRUE)
-  # devtools::install_version('arrow', '13.0.0.1')
-
-  tryCatch({
-    # set to TRUE will catch any missed dependencies
-    pacman::p_load(char = libs_to_load, install = TRUE)
-
-    # install and load rwRtools from GH (sans dependencies)
-    pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
-
-    # install and load rsims from GH (sans dependencies)
-    if(load_rsims == TRUE)
-      pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
-  }, error = function(e) {
-    print(e)
-  })
+  # Uncomment for when Posit Package Manager is up and running again
+  # # set options to favour binaries from Posit Package Manager
+  # options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
+  # options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
+  # options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
+  # options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
+  # options(warn = -1)
+  # cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
+  #
+  # # install pacman the old fashioned way - isn't listed as an ubuntu package
+  # install.packages('pacman')
+  #
+  # # rwRtools dependencies (install but don't load)
+  # # rwRtools_dependencies <- c(
+  # #   "pillar", "tibble", "rlang", "httr", "iterators", "zoo", "R.methodsS3",
+  # #   "callr", "foreach", "xts", "stringi", "Rcpp", "R.oo", "gargle", "assertthat",
+  # #   "googleAuthR", "glue", "googleCloudStorageR", "R.utils", "feather", "arrow",
+  # #   "lubridate", "readr", "stringr", "dplyr", "purrr", "magrittr", "TTR", "doParallel"
+  # # )
+  # rwRtools_dependencies <- c(
+  #   "iterators", "zoo", "R.methodsS3",
+  #   "foreach", "xts", "Rcpp", "R.oo", "assertthat",
+  #   "googleAuthR", "googleCloudStorageR", "R.utils", "feather", "arrow",
+  #   "TTR", "doParallel"
+  # )
+  #
+  # # libraries to load (install and load)
+  # libs_to_load <- c(
+  #   c("tidyverse", "lubridate"),
+  #   extra_libraries
+  # )
+  #
+  # # dependencies (install but don't load)
+  # other_dependencies <- c(
+  #   "generics", "lifecycle", "R6", "rlang", "tidyselect", "vctrs", "pillar",
+  #   "ellipsis", "digest", "gtable", "isoband", "MASS", "mgcv", "scales", "withr",
+  #   "stringi", "iterators", "R.methodsS3", "openssl", "foreach", "xts",
+  #   "R.oo", "RcppArmadillo", "slam", "timeDate", "cccp", "Rglpk", "timeSeries",
+  #   "tibble", "tidyr", "here", "roll", "Rcpp", "RcppParallel"
+  # )
+  #
+  # # libraries to install
+  # to_install <- unique(c(
+  #   libs_to_load,
+  #   other_dependencies,
+  #   rwRtools_dependencies,
+  #   extra_dependencies
+  # ))
+  #
+  # # pre-installed libraries
+  # installed <- installed.packages()[, "Package"]
+  #
+  # # remove from apt list any packages that are already installed
+  # to_install <- to_install[!to_install %in% installed]
+  #
+  # # remove arrow and install v13 instead (latest takes forever)
+  # to_install <- to_install[to_install != "arrow"]
+  #
+  # # install
+  # retry_download("arrow", "13.0.0.1")
+  # lapply(to_install, retry_download)
+  # # install.packages(to_install, dependencies = TRUE)
+  # # devtools::install_version('arrow', '13.0.0.1')
+  #
+  # tryCatch({
+  #   # set to TRUE will catch any missed dependencies
+  #   pacman::p_load(char = libs_to_load, install = TRUE, update = FALSE)
+  #
+  #   # install and load rwRtools from GH (sans dependencies)
+  #   pacman::p_load_current_gh("RWLab/rwRtools", dependencies = TRUE)
+  #
+  #   # install and load rsims from GH (sans dependencies)
+  #   if(load_rsims == TRUE)
+  #     pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
+  # }, error = function(e) {
+  #   print(e)
+  # })
 }
