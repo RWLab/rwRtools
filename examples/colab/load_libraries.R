@@ -54,7 +54,8 @@ retry_download <- function(package, version = NULL, max_retries = 3) {
     while (attempts <= max_retries) {
       tryCatch({
         # attempt download
-        pacman::p_install(package, character.only = TRUE, dependencies = TRUE, try.bioconductor = FALSE)
+        install.packages(package)
+        # pacman::p_install(package, character.only = TRUE, dependencies = TRUE, try.bioconductor = FALSE)
         # ff successful, break out
         break
       }, error = function(e) {
