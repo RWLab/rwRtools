@@ -98,6 +98,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   options(download.file.extra = sprintf("--header \"User-Agent: R (%s)\"", paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
   options(repos = c(REPO_NAME = "https://packagemanager.posit.co/cran/__linux__/jammy/latest"))
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
+  options(warn = -1)
   cat("Using", getOption("Ncpus", 1L), " CPUs for package installation")
 
   # install pacman the old fashioned way - isn't listed as an ubuntu package
