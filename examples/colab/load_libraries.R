@@ -47,7 +47,9 @@ show up in GitHub.
 TODO: make a debug message with status and return it
 "
 
-load_libraries <- function(load_rsims = TRUE) {
+
+# TODO: could remove args and replace with ... and handle ellipsis. Woudl ensure backwards compatibility.
+load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
   download.file("https://raw.githubusercontent.com/eddelbuettel/r2u/master/inst/scripts/add_cranapt_jammy.sh", "add_cranapt_jammy.sh")
   Sys.chmod("add_cranapt_jammy.sh", "0755")
   system("sudo ./add_cranapt_jammy.sh")
@@ -68,6 +70,9 @@ load_libraries <- function(load_rsims = TRUE) {
 
   # install and load rwRtools from GH (sans dependencies)
   pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
+
+  if(length(extra_libraries > 0))
+    pacman::p_load(extra_libraries, update = FALSE, install = FALSE, character.only = TRUE)
 
   if(load_rsims == TRUE)
     pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE, update = FALSE)
