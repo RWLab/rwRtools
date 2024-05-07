@@ -71,7 +71,7 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   # install and load rwRtools from GH (sans dependencies)
   pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
 
-  if(length(extra_libraries > 0))
+  if(length(extra_libraries) > 0)
     pacman::p_load(extra_libraries, update = FALSE, install = FALSE, character.only = TRUE)
 
   if(load_rsims == TRUE)
