@@ -71,8 +71,9 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   # install and load rwRtools from GH (sans dependencies)
   pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
 
-  if(length(extra_libraries) > 0)
-    pacman::p_load(extra_libraries, update = FALSE, install = FALSE, character.only = TRUE)
+  if (length(extra_libraries) > 0)
+    # do.call to avoid non-standard evaluation. weird bug
+    do.call(pacman::p_load, list(extra_libraries, update = FALSE, install = TRUE, character.only = TRUE))
 
   if(load_rsims == TRUE)
     pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE, update = FALSE)
