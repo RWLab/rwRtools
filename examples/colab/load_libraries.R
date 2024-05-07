@@ -47,71 +47,35 @@ show up in GitHub.
 TODO: make a debug message with status and return it
 "
 
-retry_download <- function(package, version = NULL, max_retries = 3) {
-  print(package)
-  attempts <- 1
-  if(is.null(version)) {
-    while (attempts <= max_retries) {
-      tryCatch({
-        # attempt download
-        install.packages(package)
-        # pacman::p_install(package, character.only = TRUE, dependencies = TRUE, try.bioconductor = FALSE)
-        # ff successful, break out
-        break
-      }, error = function(e) {
-        cat(sprintf("Attempt %d failed: %s\n", attempts, e$message))
-        # if this was the last attempt, stop with an error message
-        if (attempts == max_retries) {
-          stop("Failed after max retries")
-        }
-        attempts <- attempts + 1
-        # add a pause between retries
-        Sys.sleep(2)
-      })
-    }
-  }
-  else {
-    while (attempts <= max_retries) {
-      tryCatch({
-        # attempt download
-        devtools::install_version(package, version)
-        # if successful, break out of the loop
-        break
-      }, error = function(e) {
-        cat(sprintf("Attempt %d failed: %s\n", attempts, e$message))
-        # if this was the last attempt, stop with an error message
-        if (attempts == max_retries) {
-          stop("Failed after max retries")
-        }
-        attempts <- attempts + 1
-        # add a pause between retries
-        Sys.sleep(2)
-      })
-    }
-  }
-}
-
-
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
-  # temporary solution while Posit Package Manager is down
+  download.file("https://raw.githubusercontent.com/eddelbuettel/r2u/master/inst/scripts/add_cranapt_jammy.sh", "add_cranapt_jammy.sh")
+  Sys.chmod("add_cranapt_jammy.sh", "0755")
+  system("sudo ./add_cranapt_jammy.sh")
+
+  readRenviron("/etc/R/Renviron")
+  source("/etc/R/Rprofile.site")
+
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
+
+  require(tidyverse)
+
   # install pacman the old fashioned way - isn't listed as an ubuntu package, not available on Posit package manager
   install.packages('pacman')
 
   # install stuff that isn't already present
-  to_install <- c('iterators', 'zoo', 'R.methodsS3', 'assertthat', 'foreach', 'xts', 'Rcpp', 'R.oo', 'googleAuthR', 'doParallel', 'TTR', 'arrow', 'feather', 'R.utils', 'googleCloudStorageR')
-  lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE)
+  to_install <- c('iterators', 'zoo', 'R.methodsS3', 'assertthat', 'foreach', 'xts', 'Rcpp', 'R.oo', 'googleAuthR', 'doParallel', 'TTR', 'arrow', 'feather', 'R.utils', 'googleCloudStorageR', 'gtable')
+  lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE, force = FALSE)
 
   # install and load rwRtools from GH (sans dependencies)
   pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
 
+  extra_libraries <- c('patchwork')
   if(length(extra_libraries > 0))
-    lapply(extra_libraries, pacman::p_load, character.only = TRUE, dependencies = TRUE, try.bioconductor = FALSE)
+    pacman::p_load(extra_libraries, update = FALSE, install = FALSE, character.only = TRUE)
 
   if(load_rsims == TRUE)
-    pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE)
+    pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE, update = FALSE)
 
-  require(tidyverse)
 
   # Uncomment for when Posit Package Manager is up and running again
   # # set options to favour binaries from Posit Package Manager
