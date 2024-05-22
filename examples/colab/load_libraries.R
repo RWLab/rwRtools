@@ -47,6 +47,13 @@ show up in GitHub.
 TODO: make a debug message with status and return it
 "
 
+is_irkernel <- function() {
+  is_installed <- requireNamespace("IRkernel", quietly = TRUE)
+  is_env_set <- !is.null(Sys.getenv("JPY_PARENT_PID")) ||
+    !is.null(Sys.getenv("JPY_USER"))
+  return(is_installed && is_env_set)
+}
+
 
 # TODO: could remove args and replace with ... and handle ellipsis. Woudl ensure backwards compatibility.
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
@@ -75,8 +82,11 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     # do.call to avoid non-standard evaluation. weird bug
     do.call(pacman::p_load, list(extra_libraries, update = FALSE, install = TRUE, character.only = TRUE))
 
-  if(load_rsims == TRUE)
+  if(load_rsims == TRUE) {
     pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE, update = FALSE)
+    cat("Loading rsims requires a kernel restart in colab before authorising to the lab. Hit Ctrl + M then . or select Runtime --> Restart session")
+
+  }
 
 
   # Uncomment for when Posit Package Manager is up and running again
