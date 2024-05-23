@@ -47,15 +47,6 @@ show up in GitHub.
 TODO: make a debug message with status and return it
 "
 
-is_irkernel <- function() {
-  is_installed <- requireNamespace("IRkernel", quietly = TRUE)
-  is_env_set <- !is.null(Sys.getenv("JPY_PARENT_PID")) ||
-    !is.null(Sys.getenv("JPY_USER"))
-  return(is_installed && is_env_set)
-}
-
-
-# TODO: could remove args and replace with ... and handle ellipsis. Woudl ensure backwards compatibility.
 load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
   download.file("https://raw.githubusercontent.com/eddelbuettel/r2u/master/inst/scripts/add_cranapt_jammy.sh", "add_cranapt_jammy.sh")
   Sys.chmod("add_cranapt_jammy.sh", "0755")
@@ -66,14 +57,13 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
 
   options(Ncpus = 2)  # 2 cores in standard colab... might as well use them
 
-  require(tidyverse)
-
   # install pacman the old fashioned way - isn't listed as an ubuntu package, not available on Posit package manager
   install.packages('pacman')
 
-  # install stuff that isn't already present
-  to_install <- c('iterators', 'zoo', 'R.methodsS3', 'assertthat', 'foreach', 'xts', 'Rcpp', 'R.oo', 'googleAuthR', 'doParallel', 'TTR', 'arrow', 'feather', 'R.utils', 'googleCloudStorageR', 'gtable')
-  lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE, force = FALSE)
+  to_install <- c('googleCloudStorageR', 'googleAuthR','assertthat', 'R.oo', 'R.utils', 'foreach', 'doParallel', 'xts', 'Rcpp', 'TTR', 'arrow', 'feather',  'gtable')
+  # 'iterators', 'zoo', 'R.methodsS3',  # removed because tested install without these libraries and no issues. May be able to remove others - test one at a time.
+  if(length(to_install) > 0)
+    lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE, force = FALSE)
 
   # install and load rwRtools from GH (sans dependencies)
   pacman::p_load_gh("RWLab/rwRtools", dependencies = FALSE, update = FALSE)
@@ -83,10 +73,12 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
     do.call(pacman::p_load, list(extra_libraries, update = FALSE, install = TRUE, character.only = TRUE))
 
   if(load_rsims == TRUE) {
-    pacman::p_load_current_gh("Robot-Wealth/rsims", dependencies = TRUE, update = FALSE)
-    cat("Loading rsims requires a kernel restart in colab before authorising to the lab. Hit Ctrl + M then . or select Runtime --> Restart session")
-
+    to_install <- c('roll', 'here') # 'Rcpp' installed as part of rwRtools
+    lapply(to_install, pacman::p_install, character.only = TRUE, dependencies = FALSE, try.bioconductor = FALSE, force = FALSE)
+    pacman::p_load_gh("Robot-Wealth/rsims", dependencies = FALSE, update = FALSE)
   }
+  require(tidyverse)
+}
 
 
   # Uncomment for when Posit Package Manager is up and running again
@@ -166,4 +158,4 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_depen
   # }, error = function(e) {
   #   print(e)
   # })
-}
+# }
