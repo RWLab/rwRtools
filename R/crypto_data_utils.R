@@ -174,6 +174,64 @@ crypto_get_binance_perps_funding <- function(path = "binance", force_update = TR
   df
 }
 
+#' Load Binance Coin-M Perp 1h OHLCV data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The binance 1h coin-M perp OHLCV dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_binance_coin_m_perps_1h()
+#' }
+crypto_get_binance_coin_m_perps_1h <- function(path = "binance", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('binance_perps_coin_m_1h.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("binance_perps_coin_m_1h.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/binance_perps_coin_m_1h.feather")) %>%
+    mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
+    arrange(Datetime, Ticker)
+
+  df
+}
+
+#' Load Binance Coin-M Perp funding data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The binance coin-M perp funding dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_binance_coin_m_perps_funding()
+#' }
+crypto_get_binance_coin_m_perps_funding <- function(path = "binance", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('binance_perps_coin_m_funding.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("binance_perps_coin_m_funding.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/binance_perps_coin_m_funding.feather")) %>%
+    rename("Funding_time_unix" = fundingTime, "funding_time" = fundingTimeHR, "funding_rate" = fundingRate) %>%
+    select(Ticker, funding_time, funding_rate) %>%
+    mutate(funding_time = lubridate::as_datetime(funding_time)) %>%
+    arrange(funding_time, Ticker)
+
+  df
+}
+
 
 #' Load Coin lending rates hourly data from FTX
 #'
