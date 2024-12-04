@@ -18,6 +18,13 @@
 #' \dontrun{rwlab_data_auth()}
 rwlab_data_auth <- function ()
 {
+  # use the preconfigured OAuth client from gargle
+  # this will break at some point and we will need our own OAuth client
+  # but should continue to work in colab
+  if(!gargle:::is_google_colab()) {
+    options(gargle_oauth_client = gargle:::goc_web())
+  }
+
   # force interactive session
   options(gargle_oauth_email = NULL)  # do not preselect an email
   options(gargle_oob_default = TRUE) # use out-of-band (OOB) authentication
