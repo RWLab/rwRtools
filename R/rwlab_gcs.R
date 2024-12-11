@@ -205,7 +205,7 @@ quicksetup <- function(pod, path = ".") {
     assign("prices", prices, envir = .GlobalEnv)
     cat("prices data object transferred and loaded as data.frame to Global Env\n")
 
-    return()
+    return(invisible(NULL))
   }
 
   pod_meta <- get_pod_meta(pod)

@@ -4,15 +4,10 @@
 \alias{rwlab_data_auth}
 \title{Interactively authorise a Google Identity and load Oauth2 token}
 \usage{
-rwlab_data_auth(json = json_string, token = NULL, email = NULL)
-}
-\arguments{
-\item{oauth_email}{string, The email address you use to access The Lab. If NA (default), select interactively.}
-
-\item{oauth_cache}{bool, Cache the OAuth token for reuse until expiry}
+rwlab_data_auth()
 }
 \value{
-an OAuth token object (invisibly)
+None
 }
 \description{
 Authorise a Google Identity to access The Lab's cloud infrastructure via web browser. The first call
@@ -29,8 +24,6 @@ Internally sets the following options:
 }
 
 See \code{\link[gargle:gargle_options]{gargle_options}} for details.
-
-TODO: How to set up a Google Identity if you don't have one and/or don't want to use a gmail account.
 }
 \examples{
 \dontrun{rwlab_data_auth()}

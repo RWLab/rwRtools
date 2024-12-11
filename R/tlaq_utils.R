@@ -30,7 +30,7 @@ tlaq_get_historical_asset_class <- function(path = "tlaq", force_update = TRUE) 
   )
 
   # ensure date column is a date.
-  prices$date <- lubridate::date(prices$date)
+  df$date <- lubridate::date(df$date)
 
   df <- dplyr::arrange(df, date, ticker)
 
