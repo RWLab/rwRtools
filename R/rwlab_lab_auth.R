@@ -13,6 +13,7 @@
 #' See \code{\link[gargle:gargle_options]{gargle_options}} for details.
 #'
 #' @return None
+#' @export
 #'
 #' @examples
 #' \dontrun{rwlab_data_auth()}
