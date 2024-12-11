@@ -201,7 +201,7 @@ load_lab_object <- function(pod, object, path = ".") {
 #' }
 quicksetup <- function(pod, path = ".") {
   if(pod == "TLAQ") {
-    prices <- rwRtools::tlaq_get_historical_asset_class()
+    prices <- rwRtools::tlaq_get_historical_asset_class(path = path)
     assign("prices", prices, envir = .GlobalEnv)
     cat("prices data object transferred and loaded as data.frame to Global Env\n")
 
