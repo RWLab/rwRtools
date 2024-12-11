@@ -200,6 +200,13 @@ load_lab_object <- function(pod, object, path = ".") {
 #' quickset("EquityFactors")
 #' }
 quicksetup <- function(pod, path = ".") {
+  if(pod == "TLAQ") {
+    prices <- rwRtools::tlaq_get_historical_asset_class()
+    assign("prices", prices, envir = .GlobalEnv)
+    cat("prices data object transferred and loaded as data.frame to Global Env\n")
+
+    return()
+  }
 
   pod_meta <- get_pod_meta(pod)
   prices_file <- pod_meta[["prices"]]
