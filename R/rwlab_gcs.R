@@ -39,6 +39,12 @@ get_pod_meta <- function(pod = NA) {
       datasets = c("us_equity_bond_etfs.feather", "AssetsSeasonality.csv", "main_asset_classes_daily_ohlc.csv", "futures_daily_ohlc.feather"),
       essentials = c("main_asset_classes_daily_ohlc.csv"),
       prices = c("main_asset_classes_daily_ohlc.csv")
+    ),
+    TLAQ = list(
+      bucket = "tlaq_public",
+      datasets = c( "VVIX_History.csv", "main_asset_classes_daily_ohlc.csv", "vol.csv", "FTX_PERPETUALS_OHLC.csv", "FTX_PERPETUAL_FUNDING_RATES.csv", "FTX_SPOT_1H_CLEAN.csv"),
+      essentials = c("main_asset_classes_daily_ohlc.csv"),
+      prices = c("main_asset_classes_daily_ohlc.csv")
     )
   )
 
