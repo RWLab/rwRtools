@@ -44,7 +44,7 @@ Note for devs:
 GitHub caches raw content for 5 minutes, so any changes will take 5 minutes to
 show up in GitHub.
 "
-load_libraries <- function(load_rsims = TRUE, extra_libraries = c()) {
+load_libraries <- function(load_rsims = TRUE, extra_libraries = c(), extra_dependencies = c()) {
 
   bash_script <- '#!/bin/bash
 
@@ -102,6 +102,10 @@ load_libraries <- function(load_rsims = TRUE, extra_libraries = c()) {
 
   if (length(extra_libraries) > 0) {
     p_load(char = extra_libraries, install = TRUE, update = FALSE, character.only = TRUE)
+  }
+
+  if (length(extra_dependencies) > 0) {
+    p_load(char = extra_dependencies, install = TRUE, update = FALSE, character.only = TRUE)
   }
 
   if (load_rsims) {
