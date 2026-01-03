@@ -116,7 +116,7 @@ crypto_get_binance_spot_1h <- function(path = "binance", force_update = TRUE) {
   df
 }
 
-#' Load Binance Perp 1h OHLCV data
+#' Load Binance Perp 1h OHLCV data (USDT perps only)
 #'
 #' @param path The path to save the dataset locally.
 #' @param force_update Force download and overwrite exsiting files
@@ -129,6 +129,35 @@ crypto_get_binance_spot_1h <- function(path = "binance", force_update = TRUE) {
 #' df <- crypto_get_binance_perps_1h()
 #' }
 crypto_get_binance_perps_1h <- function(path = "binance", force_update = TRUE) {
+  if(!file.exists(file.path(path, glue::glue('binance_perps_1h.feather'))) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "Crypto",
+      object = glue::glue("binance_perps_1h.feather"),
+      path = path
+    )
+  }
+
+  df <- arrow::read_feather(glue::glue("{path}/binance_perps_1h.feather")) %>%
+    filter(stringr::str_ends(Ticker, "USDT")) %>%
+    mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
+    arrange(Datetime, Ticker)
+
+  df
+}
+
+#' Load Binance Perp 1h OHLCV data (all non coin-M perps )
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite exsiting files
+#'
+#' @return The binance 1h perp OHLCV dataset as a tibble.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- crypto_get_binance_perps_1h()
+#' }
+crypto_get_binance_perps_1h_all <- function(path = "binance", force_update = TRUE) {
   if(!file.exists(file.path(path, glue::glue('binance_perps_1h.feather'))) || force_update == TRUE) {
     transfer_lab_object(
       pod = "Crypto",
