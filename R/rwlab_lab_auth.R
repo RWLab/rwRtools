@@ -29,6 +29,7 @@ rwlab_data_auth <- function ()
   # force interactive session
   options(gargle_oauth_email = NULL)  # do not preselect an email
   options(gargle_oob_default = TRUE) # use out-of-band (OOB) authentication
+  options(rlang_interactive = TRUE)
 
   # interactive authentication
   token <- gargle::token_fetch(scopes = "https://www.googleapis.com/auth/cloud-platform")
