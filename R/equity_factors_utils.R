@@ -71,3 +71,29 @@ equity_get_statarb_acquisitions <- function(path = "equityfactors", force_update
 
   arrow::read_feather(file.path(path, "acquisitions.feather"))
 }
+
+#' Load equity factors liquid universe data
+#'
+#' @param path The path to save the dataset locally.
+#' @param force_update Force download and overwrite existing files
+#'
+#' @return The dataset as a data frame.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- equity_get_liquid_universe()
+#' }
+equity_get_liquid_universe <- function(path = "equityfactors", force_update = TRUE) {
+  if(!file.exists(file.path(path, "prices.feather")) || force_update == TRUE) {
+    transfer_lab_object(
+      pod = "EquityFactors",
+      object = "equity_factors/prices.feather",
+      path = path
+    )
+  }
+
+  prices <- arrow::read_feather(file.path(path, "prices.feather"))
+  prices <- prices %>% mutate(date = as.Date(date))
+  prices
+}
