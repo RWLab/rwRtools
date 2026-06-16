@@ -230,46 +230,99 @@ fx_get_policy_rates <- function(currencies, path = "Policy-Rates", force_update 
 #' @return A data.frame of index returns: spot, interest and total
 #' @export
 fx_total_return_index <- function(prices_df, policy_rates_df) {
+
+  # Keep policy-rate input clean to avoid accidental extra columns after joins
+  policy_rates_clean <- policy_rates_df %>%
+    dplyr::select(Currency, Date, Rate)
+
+  # Build a policy-rate panel over all FX price dates and policy-rate dates.
+  # This lets us carry policy rates forward before joining to FX prices.
+  all_dates <- dplyr::bind_rows(
+    prices_df %>% dplyr::distinct(Date),
+    policy_rates_clean %>% dplyr::distinct(Date)
+  ) %>%
+    dplyr::distinct(Date)
+
+  currencies <- policy_rates_clean %>%
+    dplyr::distinct(Currency)
+
+  policy_panel <- tidyr::expand_grid(
+    Date = all_dates$Date,
+    Currency = currencies$Currency
+  ) %>%
+    dplyr::left_join(policy_rates_clean, by = c("Currency", "Date")) %>%
+    dplyr::arrange(Currency, Date) %>%
+    dplyr::group_by(Currency) %>%
+    tidyr::fill(Rate, .direction = "down") %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(Rate = Rate * 0.01)
+
   extended_prices <- prices_df %>%
     # split ticker into Base and Quote currencies
     dplyr::mutate(
-      Base = stringr::str_sub(Ticker, 1,3),
+      Base = stringr::str_sub(Ticker, 1, 3),
       Quote = stringr::str_sub(Ticker, -3)
     ) %>%
-    dplyr::left_join(policy_rates_df, by = c('Base' = 'Currency', 'Date' = 'Date')) %>%
-    dplyr::left_join(policy_rates_df, by = c('Quote' = 'Currency', 'Date' = 'Date')) %>%
-    # carry NAs at the end of the series forward by ticker
+    dplyr::left_join(
+      policy_panel %>% dplyr::rename(Base_Rate = Rate),
+      by = c("Base" = "Currency", "Date" = "Date")
+    ) %>%
+    dplyr::left_join(
+      policy_panel %>% dplyr::rename(Quote_Rate = Rate),
+      by = c("Quote" = "Currency", "Date" = "Date")
+    ) %>%
     dplyr::group_by(Ticker) %>%
     dplyr::arrange(Ticker, Date) %>%
     dplyr::mutate(
-      Base_Rate = zoo::na.locf(Rate.x, na.rm = FALSE)*0.01,
-      Quote_Rate = zoo::na.locf(Rate.y, na.rm = FALSE)*0.01,
       Rate_Diff = Base_Rate - Quote_Rate,
-      Daycount_Fraction = (as.numeric(Date) - as.numeric(dplyr::lag(Date))) / 365,
-      # calculate interest returns
-      Interest_Returns = Daycount_Fraction * Rate_Diff,
-      # calculate Interest_Accrual_on_Spot (the interest that accrues since the
-      # last observation on a single unit of currency given the last spot rate,
-      # expressed in the quote currency):
-      Interest_Accrual_on_Spot = Daycount_Fraction * Rate_Diff * Close,
-      # calculate Spot returns from closing prices
-      Spot_Returns = Close / dplyr::lag(Close) - 1
-    ) %>%
-    # remove records for which we don't have interest rates (after carrying
-    # forward). Drop raw rates before na.omit as might contain NAs, leading
-    # to loss of rows that were filled by na.locf.
-    dplyr::select(c(-Rate.x, -Rate.y)) %>%
-    na.omit
 
-  # calculate total return indexes (assumes periodic compounding of interest
-  # on each price observation)
+      Daycount_Fraction =
+        (as.numeric(Date) - as.numeric(dplyr::lag(Date))) / 365,
+
+      # Spot return from t-1 to t
+      Spot_Returns = Close / dplyr::lag(Close) - 1,
+
+      # Interest return earned over the period from t-1 to t.
+      # Use lagged rates because those are the rates known/accruing during the period.
+      Interest_Returns =
+        (
+          (1 + dplyr::lag(Base_Rate) * Daycount_Fraction) /
+            (1 + dplyr::lag(Quote_Rate) * Daycount_Fraction)
+        ) - 1,
+
+      # Kept for backwards compatibility.
+      # Approximate quote-currency interest accrual on one unit of base exposure,
+      # using previous spot value as the period's starting capital.
+      Interest_Accrual_on_Spot =
+        Interest_Returns * dplyr::lag(Close)
+    ) %>%
+    # Drop only rows needed for return/index construction.
+    # Avoid broad na.omit because prices_df may contain unrelated nullable columns.
+    tidyr::drop_na(
+      Base_Rate,
+      Quote_Rate,
+      Daycount_Fraction,
+      Spot_Returns,
+      Interest_Returns,
+      Interest_Accrual_on_Spot
+    )
+
+  # calculate total return indexes
   extended_prices %>%
     dplyr::group_by(Ticker) %>%
+    dplyr::arrange(Ticker, Date) %>%
     dplyr::mutate(
-      Spot_Return_Index = cumprod(1 + Spot_Returns), # Not necessary, but useful for validation
+      Spot_Return_Index = cumprod(1 + Spot_Returns),
+
+      # Same column name as original
       Interest_Return_Index = cumprod(1 + Interest_Returns),
-      Total_Return_Index = cumprod(1+ Spot_Returns + Interest_Returns)
-    )
+
+      # Exact multiplicative combination of spot and carry
+      Total_Return_Index = cumprod(
+        (1 + Spot_Returns) * (1 + Interest_Returns)
+      )
+    ) %>%
+    dplyr::ungroup()
 }
 
 #' Unique currencies from fx pairs
