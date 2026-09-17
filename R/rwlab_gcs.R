@@ -183,7 +183,7 @@ load_lab_object <- function(pod, object, path = ".") {
   }
 
   if(transfer_lab_object(pod = pod, object = object, path = path)) {
-    feather::read_feather(glue::glue("{path}/{on_disk_name}"))
+    rw_read_feather(glue::glue("{path}/{on_disk_name}"))
   }
 }
 
@@ -205,7 +205,7 @@ quicksetup <- function(pod, path = ".") {
 
   if(transfer_pod_data(pod, path = path)) {
     if(stringr::str_detect(prices_file, ".feather")) {
-      prices <- feather::read_feather(glue::glue("{path}/{prices_file}"))
+      prices <- rw_read_feather(glue::glue("{path}/{prices_file}"))
     }
     else if(any(stringr::str_detect(prices_file, c(".csv", ".txt")))) {
       col_types = NULL

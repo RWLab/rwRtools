@@ -53,7 +53,7 @@ crypto_get_coincodex <- function(path = "coincodex", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/coincodex_marketcap.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/coincodex_marketcap.feather")) %>%
     mutate(Date = lubridate::as_date(Date)) %>%
     arrange(Date, Ticker)
 
@@ -109,7 +109,7 @@ crypto_get_binance_spot_1h <- function(path = "binance", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_spot_1h.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_spot_1h.feather")) %>%
     mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
     arrange(Datetime, Ticker)
 
@@ -137,7 +137,7 @@ crypto_get_binance_perps_1h <- function(path = "binance", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_perps_1h.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_perps_1h.feather")) %>%
     filter(stringr::str_ends(Ticker, "USDT")) %>%
     mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
     arrange(Datetime, Ticker)
@@ -166,7 +166,7 @@ crypto_get_binance_perps_1h_all <- function(path = "binance", force_update = TRU
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_perps_1h.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_perps_1h.feather")) %>%
     mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
     arrange(Datetime, Ticker)
 
@@ -194,7 +194,7 @@ crypto_get_binance_perps_funding <- function(path = "binance", force_update = TR
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_perps_funding.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_perps_funding.feather")) %>%
     rename("Funding_time_unix" = fundingTime, "funding_time" = fundingTimeHR, "funding_rate" = fundingRate) %>%
     select(Ticker, funding_time, funding_rate) %>%
     mutate(funding_time = lubridate::as_datetime(funding_time)) %>%
@@ -224,7 +224,7 @@ crypto_get_binance_coin_m_perps_1h <- function(path = "binance", force_update = 
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_perps_coin_m_1h.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_perps_coin_m_1h.feather")) %>%
     mutate(Datetime = lubridate::as_datetime(Datetime)) %>%
     arrange(Datetime, Ticker)
 
@@ -252,7 +252,7 @@ crypto_get_binance_coin_m_perps_funding <- function(path = "binance", force_upda
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/binance_perps_coin_m_funding.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/binance_perps_coin_m_funding.feather")) %>%
     rename("Funding_time_unix" = fundingTime, "funding_time" = fundingTimeHR, "funding_rate" = fundingRate) %>%
     select(Ticker, funding_time, funding_rate) %>%
     mutate(funding_time = lubridate::as_datetime(funding_time)) %>%
@@ -283,7 +283,7 @@ crypto_get_lending_rates <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_coin_lending_rates.feather'))
     )
 
@@ -315,7 +315,7 @@ crypto_get_futures <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_futures_ohlc_1h.feather'))
   )
 
@@ -347,7 +347,7 @@ crypto_get_index <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_index_ohlc_1h.feather'))
   )
 
@@ -381,7 +381,7 @@ crypto_get_perp_rates <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_perpetual_funding_rates.feather'))
   )
 
@@ -415,7 +415,7 @@ crypto_get_spot <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_spot_ohlc_1h.feather'))
   )
 
@@ -448,7 +448,7 @@ crypto_get_clean_spot <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_clean_spot_ohlc_1h.feather'))
   )
 
@@ -481,7 +481,7 @@ crypto_get_rebalance_trades <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_token_rebalance_trades.feather'))
   )
 
@@ -514,7 +514,7 @@ crypto_get_expired_futures <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_expired_futures_1h_ohlc.feather'))
   )
 
@@ -548,7 +548,7 @@ crypto_get_minute_perpetuals <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_perps_1m_ohlc.feather'))
   )
 
@@ -581,7 +581,7 @@ crypto_get_top_of_book_sample <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_btc_perp_bbo_sample.feather'))
   )
 
@@ -611,7 +611,7 @@ crypto_get_trades_sample <- function(path = "ftx", force_update = TRUE) {
     )
   }
 
-  df <- feather::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('ftx_btc_perp_trades_sample.feather'))
   )
 

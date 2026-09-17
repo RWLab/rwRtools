@@ -56,7 +56,7 @@ fx_get_daily_OHLC_ticker <- function(ticker, path = "Daily", force_update = TRUE
     )
   }
   try(
-    td <- feather::read_feather(glue::glue("{path}/{ticker}.feather"))
+    td <- rw_read_feather(glue::glue("{path}/{ticker}.feather"))
   )
   colnames(td) <- c('Date', 'Open' ,'High', 'Low', 'Close', 'Volume', 'Ticker')
   td$Date <- lubridate::as_date(as.character(td$Date))
@@ -87,7 +87,7 @@ fx_get_hourly_OHLC_ticker <- function(ticker, path = "Hourly", force_update = TR
       path = path
     )
   }
-  td <- feather::read_feather(glue::glue("{path}/{ticker}.feather"))
+  td <- rw_read_feather(glue::glue("{path}/{ticker}.feather"))
   colnames(td) <- c('Datetime', 'Open' ,'High', 'Low', 'Close', 'Volume', 'Ticker')
   td$Datetime <- lubridate::as_datetime(as.character(td$Datetime))
   td$Ticker <- as.character(td$Ticker)

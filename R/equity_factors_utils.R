@@ -21,7 +21,7 @@ equity_get_statarb_spreads <- function(path = "equityfactors", force_update = TR
     )
   }
 
-  arrow::read_feather(file.path(path, "spreads.feather"))
+  rw_read_feather(file.path(path, "spreads.feather"))
 }
 
 #' Load stat arb prices data
@@ -45,7 +45,7 @@ equity_get_statarb_prices <- function(path = "equityfactors", force_update = TRU
     )
   }
 
-  arrow::read_feather(file.path(path, "prices.feather"))
+  rw_read_feather(file.path(path, "prices.feather"))
 }
 
 #' Load stat arb acquisitions data
@@ -69,7 +69,7 @@ equity_get_statarb_acquisitions <- function(path = "equityfactors", force_update
     )
   }
 
-  arrow::read_feather(file.path(path, "acquisitions.feather"))
+  rw_read_feather(file.path(path, "acquisitions.feather"))
 }
 
 #' Load equity factors liquid universe data
@@ -93,7 +93,7 @@ equity_get_liquid_universe <- function(path = "equityfactors", force_update = TR
     )
   }
 
-  prices <- arrow::read_feather(file.path(path, "prices.feather"))
+  prices <- rw_read_feather(file.path(path, "prices.feather"))
   prices <- prices %>% mutate(date = as.Date(date))
   prices
 }
@@ -119,6 +119,6 @@ equity_get_liquid_universe_sectors <- function(path = "equityfactors", force_upd
     )
   }
 
-  sectors <- arrow::read_feather(file.path(path, "sectors.feather"))
+  sectors <- rw_read_feather(file.path(path, "sectors.feather"))
   sectors
 }

@@ -53,7 +53,7 @@ macro_get_expiring_futures <- function(path = "macropod", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('futures_1d_ohlc.feather'))
   ) %>%
     mutate(
@@ -85,7 +85,7 @@ macro_get_expiring_rp_futures <- function(path = "macropod", force_update = TRUE
     )
   }
 
-  df <- arrow::read_feather(
+  df <- rw_read_feather(
     file.path(path, glue::glue('rp_futures_1d_ohlc.feather'))
   )%>%
     mutate(date = lubridate::as_date(date))
@@ -115,7 +115,7 @@ macro_get_expiring_vx_futures <- function(path = "macropod", force_update = TRUE
     )
   }
 
-  df <- arrow::read_feather(
+  df <- rw_read_feather(
     file.path(path, obj)
   ) %>%
     mutate(
@@ -273,7 +273,7 @@ macro_get_earnings <- function(path = "macropod", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/earnings.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/earnings.feather")) %>%
     mutate(date = lubridate::as_date(date)) %>%
     arrange(date, symbol) %>%
     select(date, symbol, quarter, year, hour, epsEstimate, epsActual, revenueEstimate, revenueActual)
@@ -302,7 +302,7 @@ macro_get_straddles_over_earnings <- function(path = "macropod", force_update = 
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/earnings_straddles.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/earnings_straddles.feather")) %>%
     mutate(
       earningsDate = lubridate::as_date(earningsDate),
       tradeDate = lubridate::as_date(tradeDate),
@@ -339,7 +339,7 @@ macro_get_close_price_momo <- function(path = "macropod", force_update = TRUE) {
     )
   }
 
-  df <- arrow::read_feather(glue::glue("{path}/close_momentum.feather")) %>%
+  df <- rw_read_feather(glue::glue("{path}/close_momentum.feather")) %>%
     mutate(
       date = lubridate::as_date(date)
     ) %>%

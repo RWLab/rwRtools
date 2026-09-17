@@ -17,7 +17,6 @@ Imports:
     glue,
     googleCloudStorageR,
     R.utils,
-    feather,
     arrow,
     lubridate,
     readr,
