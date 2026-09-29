@@ -4,7 +4,7 @@
 \alias{transfer_lab_object}
 \title{Transfer a single specified object from data library}
 \usage{
-transfer_lab_object(pod, object, path = ".")
+transfer_lab_object(pod, object, path = ".", force = FALSE)
 }
 \arguments{
 \item{pod}{string, Name of the Research Pod}
@@ -12,6 +12,8 @@ transfer_lab_object(pod, object, path = ".")
 \item{object}{string, Name of the object to transfer}
 
 \item{path}{string, Local path for saving object, defaults to "."}
+
+\item{force}{logical, re-download even when an identical local copy exists. Defaults to FALSE.}
 }
 \value{
 \code{bool} specifying success (TRUE) or failure (FALSE) of object transfer

@@ -117,6 +117,7 @@ transfer_pod_data <- function(pod, path = ".") {
 #' @param pod string, Name of the Research Pod
 #' @param object string, Name of the object to transfer
 #' @param path string, Local path for saving object, defaults to "."
+#' @param force logical, re-download even when an identical local copy exists. Defaults to FALSE.
 #'
 #' @return `bool` specifying success (TRUE) or failure (FALSE) of object transfer
 #'
@@ -124,7 +125,7 @@ transfer_pod_data <- function(pod, path = ".") {
 #' \dontrun{
 #' transfer_lab_object(path = ".", object = "clean_R1000.csv", bucket = "rw_equity_research_sprint")
 #' }
-transfer_lab_object <- function(pod, object, path = ".") {
+transfer_lab_object <- function(pod, object, path = ".", force = FALSE) {
 # TODO: check object exists, get file size
   # note that gcs_ functions already have good checks and error handling (eg check if object exists) so no need to  reinvent that wheel
 
@@ -139,6 +140,37 @@ transfer_lab_object <- function(pod, object, path = ".") {
 
   if(!dir.exists(path)) {
     dir.create(path)
+  }
+
+  local_file <- glue::glue("{path}/{on_disk_name}")
+
+  # Reuse a local copy when it is demonstrably the same object. Without this
+  # every call re-downloads in full: load_statarb_data() pulls ~540MB from GCS
+  # on every run, which is slow on a desk and worse on a member's connection.
+  #
+  # Two conditions, both required. Size alone would serve a stale file if an
+  # object were regenerated with the same byte count; mtime alone would miss a
+  # truncated or partial download. Together they are cheap and hard to fool.
+  # `force = TRUE` bypasses.
+  if(!force && file.exists(local_file)) {
+    meta <- tryCatch(
+      googleCloudStorageR::gcs_get_object(
+        object = object, bucket = pod_meta[["bucket"]], meta = TRUE
+      ),
+      error = function(e) NULL
+    )
+    if(!is.null(meta) && !is.null(meta$size) && !is.null(meta$updated)) {
+      same_size <- as.numeric(meta$size) == file.size(local_file)
+      not_stale <- as.POSIXct(file.mtime(local_file), tz = "UTC") >=
+                   as.POSIXct(meta$updated, tz = "UTC")
+      if(isTRUE(same_size) && isTRUE(not_stale)) {
+        cat(glue::glue("Using cached {on_disk_name} ({round(file.size(local_file)/1e6)} MB)
+"))
+        cat("
+")
+        return(TRUE)
+      }
+    }
   }
 
   # attempt object transfer
@@ -161,6 +193,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #' @param pod string, The name of the Research Pod
 #' @param object string, The name of the data object
 #' @param path string, The local path to the directory to save the data object. defaults to "."
+#' @param force logical, re-download even when an identical local copy exists. Defaults to FALSE.
 #'
 #' @return `object` as a `data.frame`
 #' @export
@@ -169,7 +202,7 @@ transfer_lab_object <- function(pod, object, path = ".") {
 #' \dontrun{
 #' load_lab_object("EquityFactors", "R1000_fundamentals_1d.feather")
 #' }
-load_lab_object <- function(pod, object, path = ".") {
+load_lab_object <- function(pod, object, path = ".", force = FALSE) {
 
   # if using a "directory structure" in GCS, object names will look like file paths
   if(length(strsplit(object, "/")[[1]]) > 1) {
@@ -182,7 +215,7 @@ load_lab_object <- function(pod, object, path = ".") {
     dir.create(path)
   }
 
-  if(transfer_lab_object(pod = pod, object = object, path = path)) {
+  if(transfer_lab_object(pod = pod, object = object, path = path, force = force)) {
     rw_read_feather(glue::glue("{path}/{on_disk_name}"))
   }
 }

@@ -4,7 +4,7 @@
 \alias{load_lab_object}
 \title{Transfer object from data library and return it as a \code{data.frame}}
 \usage{
-load_lab_object(pod, object, path = ".")
+load_lab_object(pod, object, path = ".", force = FALSE)
 }
 \arguments{
 \item{pod}{string, The name of the Research Pod}
@@ -12,6 +12,8 @@ load_lab_object(pod, object, path = ".")
 \item{object}{string, The name of the data object}
 
 \item{path}{string, The local path to the directory to save the data object. defaults to "."}
+
+\item{force}{logical, re-download even when an identical local copy exists. Defaults to FALSE.}
 }
 \value{
 \code{object} as a \code{data.frame}
